@@ -36,7 +36,7 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Fields" asp-action="Index">Fields</a></li>
+                        @*<li><a asp-area="" asp-controller="Fields" asp-action="Index">Fields</a></li>*@
                         <li><a asp-area="" asp-controller="Professions" asp-action="Index">Professions</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="Index">User List</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="RegisterTeacher">Register Teacher</a></li>
@@ -45,13 +45,13 @@
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
                     {
 
-                        <li><a asp-area="" asp-controller="Account" asp-action="StudentsList">Students List</a></li>
-                        <li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>
+                        @*<li><a asp-area="" asp-controller="Account" asp-action="StudentsList">Students List</a></li>
+                        <li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
 
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                     {
-                        <li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>
+                        @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
                     }
 
                 </ul>

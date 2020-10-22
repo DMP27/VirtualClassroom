@@ -30,6 +30,11 @@ namespace VirtualClassroom.WEB.Helpers
 
         Task<User> AddUserAsync(AddUserViewModel model, Guid imageId, UserType userType);
 
+
+        Task addsubjectsAsync(User user, AddUserViewModel model);
+
+        //public async Task addsubjectsAsync(User user, AddUserViewModel model);
+
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
 
         Task<IdentityResult> UpdateUserAsync(User user);

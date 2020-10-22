@@ -26,7 +26,7 @@ namespace VirtualClassroom.WEB.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckFieldsAsync();
+            
             await CheckRolesAsync();
             //await CheckUserAsync("1010", "Daniel", "Munoz", "danielmunozparedes@gmail.com", "312 232 1364", "florencia", UserType.Admin,1);
 
@@ -136,7 +136,9 @@ namespace VirtualClassroom.WEB.Data
 
 
                 await CheckProfessionAsync();
-                await CheckMeetingAsync();
+                await CheckSubjectsAsync();
+                //await  CheckUserSubjectsAsync();
+                //await CheckMeetingAsync();
             }
             ////field 2
             //await CheckUserAsync("1011", "Carlos", "Munoz", "cml@yopmail.com", "312 232 1454", "florencia", UserType.Teacher, 6);
@@ -167,27 +169,11 @@ namespace VirtualClassroom.WEB.Data
             {
                 _context.Professions.Add(new Profession
                 {
-                    Name = "Priest"
-                });
-                _context.Professions.Add(new Profession
-                {
-                    Name = "Musician"
+                    Name = "Student"
                 });
                 _context.Professions.Add(new Profession
                 {
                     Name = "Proffesor"
-                });
-                _context.Professions.Add(new Profession
-                {
-                    Name = "Engineer"
-                });
-                _context.Professions.Add(new Profession
-                {
-                    Name = "Film Director"
-                });
-                _context.Professions.Add(new Profession
-                {
-                    Name = "Doctor"
                 });
                 await _context.SaveChangesAsync();
             }
@@ -228,8 +214,8 @@ namespace VirtualClassroom.WEB.Data
                     UserName = email,
                     PhoneNumber = phone,
                     Address = address,
-                    Document = document,
-                    Church = await _context.Churches.FindAsync(church)
+                    Document = document
+                    //Church = await _context.Churches.FindAsync(church)
                     //Church = _context.Churches.FirstOrDefault()
                     ,
                     UserType = userType
@@ -273,9 +259,10 @@ namespace VirtualClassroom.WEB.Data
                     PhoneNumber = phone,
                     Address = address,
                     Document = document,
-                    Church = await _context.Churches.FindAsync(church)
+                    //Church = await _context.Churches.FindAsync(church)
                     //Church = _context.Churches.FirstOrDefault()
-                    ,
+                    
+
                     UserType = userType
                 };
 
@@ -380,75 +367,41 @@ namespace VirtualClassroom.WEB.Data
 
 
 
-        private async Task CheckFieldsAsync()
+        private async Task CheckSubjectsAsync()
         {
-            if (!_context.Fields.Any())
+            if (!_context.Subjects.Any())
             {
-                _context.Fields.Add(new Field
+                _context.Subjects.Add(new Subject
                 {
-                    Name = "Field 1",
-                    Districts = new List<District>
-                {
-                    new District
+                   
+                    Name = "Math" ,
+
+                    UserSubjects = new List<UserSubject>
                     {
-                        Name = "District 1",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "Cathedral of the holy cross"  },
-                            new Church { Name = "Holy cross" }
-                        }
-                    },
-                    new District
-                    {
-                        Name = "District 2",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "Our lady of good voyage" }
-                        }
-                    },
-                    new District
-                    {
-                        Name = "District 3",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "Sacred heart" },
-                            new Church { Name = "christ fellowship" }
-                        }
+                                        new UserSubject {                                         
+                                                           User = await _context.Users.FindAsync("600") },
+
+
                     }
-                }
+
+
+
                 });
-                _context.Fields.Add(new Field
+                _context.Subjects.Add(new Subject
                 {
-                    Name = "Field 2",
-                    Districts = new List<District>
-                {
-                    new District
+                    Name = "Chemistry",
+                    UserSubjects = new List<UserSubject>
                     {
-                        Name = "District 4",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "Metal church" },
-                            new Church { Name = "Sacred reich" }
-                        }
-                    },
-                    new District
-                    {
-                        Name = "District 5",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "chtulhu's church" }
-                        }
-                    },
-                    new District
-                    {
-                        Name = "District 6",
-                        Churches = new List<Church>
-                        {
-                            new Church { Name = "Left hand path" },
-                            new Church { Name = "Last one on earth" }
-                        }
+                                        new UserSubject {
+                                                           User = await _context.Users.FindAsync("600") },
+
+
                     }
-                }
+                });
+                _context.Subjects.Add(new Subject
+                {
+                    Name = "English"
+ 
                 });
                 await _context.SaveChangesAsync();
             }
@@ -456,7 +409,33 @@ namespace VirtualClassroom.WEB.Data
         }
 
 
+        private async Task CheckUserSubjectsAsync()
+        {
+            if (!_context.UserSubjects.Any())
+            {
+                _context.UserSubjects.Add(new UserSubject
+                {
 
+                    
+                    User = await _context.Users.FindAsync("788"),
+                    Subject = await _context.Subjects.FindAsync(1)
+
+                });
+                await _context.SaveChangesAsync();
+            }
+
+
+            //        Assistances = new List<Assistance>
+            //            {
+            //                new Assistance {
+            //                    IsPresent = true,
+            //                                   User = await _context.Users.FindAsync("788") },
+
+            //                new Assistance {  IsPresent = true,
+            //                                   User = await _context.Users.FindAsync("789") }
+            //            }
+
+        }
 
 
 

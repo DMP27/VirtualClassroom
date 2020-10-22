@@ -98,8 +98,8 @@ namespace VirtualClassroom.WEB.Controllers.API
                 PhoneNumber = request.Phone,
                 UserName = request.Email,
                 ImageId = imageId,
-                UserType = UserType.User,
-                Church = church
+                UserType = UserType.User
+                //Church = church
               
             };
 
@@ -275,7 +275,7 @@ namespace VirtualClassroom.WEB.Controllers.API
             user.Address = request.Address;
             user.PhoneNumber = request.Phone;
             user.Document = request.Phone;
-            user.Church = church;
+            //user.Church = church;
             user.ImageId = imageId;
 
             IdentityResult respose = await _userHelper.UpdateUserAsync(user);

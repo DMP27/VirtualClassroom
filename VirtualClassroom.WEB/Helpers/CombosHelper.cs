@@ -19,63 +19,83 @@ namespace VirtualClassroom.WEB.Helpers
         {
             _context = context;
         }
-        public IEnumerable<SelectListItem> GetComboChurches(int districtId)
+        //public IEnumerable<SelectListItem> GetComboChurches(int districtId)
+        //{
+        //    List<SelectListItem> list = new List<SelectListItem>();
+        //    District district = _context.Districts
+        //        .Include(d => d.Churches)
+        //        .FirstOrDefault(d => d.Id == districtId);
+        //    if (district != null)
+        //    {
+        //        list = district.Churches.Select(t => new SelectListItem
+        //        {
+        //            Text = t.Name,
+        //            Value = $"{t.Id}"
+        //        })
+        //            .OrderBy(t => t.Text)
+        //            .ToList();
+        //    }
+
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "[Select a Church...]",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+
+        //}
+
+        //public IEnumerable<SelectListItem> GetComboDistricts(int fieldId)
+        //{
+        //    List<SelectListItem> list = new List<SelectListItem>();
+        //    Field field = _context.Fields
+        //        .Include(f => f.Districts)
+        //        .FirstOrDefault(f => f.Id == fieldId);
+        //    if (field != null)
+        //    {
+        //        list = field.Districts.Select(t => new SelectListItem
+        //        {
+        //            Text = t.Name,
+        //            Value = $"{t.Id}"
+        //        })
+        //            .OrderBy(t => t.Text)
+        //            .ToList();
+        //    }
+
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "[Select a District...]",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+
+        //}
+
+        //public IEnumerable<SelectListItem> GetComboFields()
+        //{
+        //    List<SelectListItem> list = _context.Fields.Select(t => new SelectListItem
+        //    {
+        //        Text = t.Name,
+        //        Value = $"{t.Id}"
+        //    })
+        //    .OrderBy(t => t.Text)
+        //    .ToList();
+
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "[Select a Field...]",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+
+        //}
+
+        public IEnumerable<SelectListItem> GetComboSubjects()
         {
-            List<SelectListItem> list = new List<SelectListItem>();
-            District district = _context.Districts
-                .Include(d => d.Churches)
-                .FirstOrDefault(d => d.Id == districtId);
-            if (district != null)
-            {
-                list = district.Churches.Select(t => new SelectListItem
-                {
-                    Text = t.Name,
-                    Value = $"{t.Id}"
-                })
-                    .OrderBy(t => t.Text)
-                    .ToList();
-            }
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "[Select a Church...]",
-                Value = "0"
-            });
-
-            return list;
-
-        }
-
-        public IEnumerable<SelectListItem> GetComboDistricts(int fieldId)
-        {
-            List<SelectListItem> list = new List<SelectListItem>();
-            Field field = _context.Fields
-                .Include(f => f.Districts)
-                .FirstOrDefault(f => f.Id == fieldId);
-            if (field != null)
-            {
-                list = field.Districts.Select(t => new SelectListItem
-                {
-                    Text = t.Name,
-                    Value = $"{t.Id}"
-                })
-                    .OrderBy(t => t.Text)
-                    .ToList();
-            }
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "[Select a District...]",
-                Value = "0"
-            });
-
-            return list;
-
-        }
-
-        public IEnumerable<SelectListItem> GetComboFields()
-        {
-            List<SelectListItem> list = _context.Fields.Select(t => new SelectListItem
+            List<SelectListItem> list = _context.Subjects.Select(t => new SelectListItem
             {
                 Text = t.Name,
                 Value = $"{t.Id}"
@@ -85,13 +105,90 @@ namespace VirtualClassroom.WEB.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Select a Field...]",
+                Text = "[Select a Subject...]",
                 Value = "0"
             });
 
             return list;
 
         }
+        //public IEnumerable<SelectListItem> GetComboDistricts(int fieldId)
+        //{
+        //    List<SelectListItem> list = new List<SelectListItem>();
+        //    Field field = _context.Fields
+        //        .Include(f => f.Districts)
+        //        .FirstOrDefault(f => f.Id == fieldId);
+        //    if (field != null)
+        //    {
+        //        list = field.Districts.Select(t => new SelectListItem
+        //        {
+        //            Text = t.Name,
+        //            Value = $"{t.Id}"
+        //        })
+        //            .OrderBy(t => t.Text)
+        //            .ToList();
+        //    }
+
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "[Select a District...]",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+
+        //}
+
+
+        public IEnumerable<SelectListItem> GetComboSubjects2(String userId)
+
+
+        {
+
+
+            List<SelectListItem> list = _context.UserSubjects.Where(u => u.User.Id == userId).
+                
+                Select(t => new SelectListItem
+            {
+                Text = t.Subject.Name,
+                Value = $"{t.Id}"
+            })
+            .OrderBy(t => t.Text)
+            .ToList();
+
+
+          
+            //list.Insert(0, new SelectListItem
+            //{
+            //    Text = "[Select a Subject...]",
+            //    Value = "0"
+            //});
+
+            return list;
+
+        }
+
+
+        //public IEnumerable<Subject> GetComboSubjects3(String userId)
+
+
+        //{
+
+
+        //    List<Subject> list =  _context.UserSubjects.Where(u => u.User.Id == userId)ToListAsync();
+            
+
+
+
+        //    //list.Insert(0, new SelectListItem
+        //    //{
+        //    //    Text = "[Select a Subject...]",
+        //    //    Value = "0"
+        //    //});
+
+        //    return list;
+
+        //}
 
         public IEnumerable<SelectListItem> GetComboProfessions()
         {

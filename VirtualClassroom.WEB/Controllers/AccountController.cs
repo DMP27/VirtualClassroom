@@ -21,9 +21,6 @@ namespace VirtualClassroom.WEB.Controllers
 {
     public class AccountController : Controller
     {
-        public Church ChurchT { get; set; }
-        public District DistrictT { get; set; }
-        public Field FieldT { get; set; }
 
         private readonly IUserHelper _userHelper;
         private readonly DataContext _context;
@@ -45,11 +42,7 @@ namespace VirtualClassroom.WEB.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Users.
-                Include(u => u.Profession)
-                .Include(u => u.Church).
-                ThenInclude(u => u.District).
-                ThenInclude(u => u.Field)
-                .ToListAsync());
+                Include(u => u.Profession).ToListAsync());
 
 
         }
@@ -77,6 +70,8 @@ namespace VirtualClassroom.WEB.Controllers
             //}
 
 
+
+
             Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
             if (profession == null)
             {
@@ -84,101 +79,11 @@ namespace VirtualClassroom.WEB.Controllers
             }
 
 
+             
+            return View(await _context.Users.Where(u => u.IdSubject == user.IdSubject).Include(u => u.Profession).ToListAsync());
 
-
-
-            //User   model = new User
-            //{
-            //    Address = user.Address,
-            //    FirstName = user.FirstName,
-            //    LastName = user.LastName,
-            //    PhoneNumber = user.PhoneNumber,
-            //    ImageId = user.ImageId,
-
-            //    //Churches = _combosHelper.GetComboChurches(district.Id),
-            //    Church = user.Church,
-            //    IdChurch = user.Church.Id,
-            //    //Fields = _combosHelper.GetComboFields(),
-            //    //Districts = _combosHelper.GetComboDistricts(field.Id),
-            //    Profession = user.Profession,
-            //    IdProfession = profession.Id,
-            //    //Id = user.Id,
-
-            //    Document = user.Document
-            //};
-
-
-
-            //return View(await _context.Users.Where(u => u.Church.Id == ChurchT.Id).
-            //Include(u => u.Profession.Id)
-            //.Include(u => u.Church.Id)
-            //.ToListAsync());
-
-            return View(await _context.Users.Where(u => u.Church.Id == user.Church.Id).Include(u => u.Profession).ToListAsync());
-
-    //        return View(await _context.Users.
-    //Include(u => u.Profession)
-    //.Include(u => u.Church).
-    //ThenInclude(u => u.District).
-    //ThenInclude(u => u.Field)
-    //.ToListAsync());
-            //return View(model);
+    
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> StudentsList(EditUserViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Guid imageId = model.ImageId;
-
-        //        if (model.ImageFile != null)
-        //        {
-        //            imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-        //        }
-
-        //        User user = await _userHelper.GetUserAsync(User.Identity.Name);
-
-        //        user.FirstName = model.FirstName;
-        //        user.LastName = model.LastName;
-        //        user.Address = model.Address;
-        //        user.PhoneNumber = model.PhoneNumber;
-        //        user.ImageId = imageId;
-        //        user.Church = await _context.Churches.FindAsync(model.ChurchId);
-        //        user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
-        //        user.Document = model.Document;
-
-
-        //        //await _userHelper.UpdateUserAsync(user);
-        //        //return RedirectToAction("Index", "Home");
-        //    }
-
-        //    //model.Fields = _combosHelper.GetComboFields();
-        //    //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-        //    //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
-        //    //model.Professions = _combosHelper.GetComboProfessions();
-        //    return View(await _context.Users.
-        //    Include(u => u.Profession.Id == profession.Id)
-        //    .Include(u => u.Church.Id == u.Church.Id);
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         public IActionResult Login()
@@ -231,38 +136,61 @@ namespace VirtualClassroom.WEB.Controllers
         {
             AddUserViewModel model = new AddUserViewModel
             {
-                Fields = _combosHelper.GetComboFields(),
-                Districts = _combosHelper.GetComboDistricts(0),
-                Churches = _combosHelper.GetComboChurches(0),
-                Professions = _combosHelper.GetComboProfessions()
+                
+                
+                //Districts = _combosHelper.GetComboDistricts(0),
+                //Churches = _combosHelper.GetComboChurches(0),
+                Professions = _combosHelper.GetComboProfessions(),
+                Subjects = _combosHelper.GetComboSubjects()
 
             };
 
             return View(model);
         }
 
+        public String valueAsString;
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(AddUserViewModel model)
+
         {
+            //var selected = model.SubjectId.Items.Where(i => i.Selected);
+
+            //foreach (int blah in S.sele)
+            //{
+
+            //    MessageBox.Show(blah.ToString());
+
+            //}
             //System.Diagnostics.Debug.WriteLine("ENTRAAA DONDE NO DEBE------------------------>" + UserType.Teacher.ToString());
+
+            //SelectListItem[] items = model.SubjectId.ToArray();
+            //SelectListItem selectedItem = items.FirstOrDefault(i => i.Value == valueAsString)
+            //    ?? items[0];
+            //string selectedText = selectedItem.Text;
+
+            //int p = model.SubjectId.ToArray().Count();
+
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine("ENTRAAA DONDE NO DEBE------------------------>" + UserType.Teacher.ToString());
                 Guid imageId = Guid.Empty;
 
-                if (model.ImageFile != null)
-                {
-                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-                }
+                //if (model.ImageFile != null)
+                //{
+                //    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+                //}
+
 
                 User user = await _userHelper.AddUserAsync(model, imageId, UserType.User);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");
-                    model.Fields = _combosHelper.GetComboFields();
-                    model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-                    model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+                    //model.Fields = _combosHelper.GetComboFields();
+                    //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+                    //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+                    model.Subjects = _combosHelper.GetComboSubjects();
                     model.Professions = _combosHelper.GetComboProfessions();
 
                     return View(model);
@@ -288,41 +216,60 @@ namespace VirtualClassroom.WEB.Controllers
 
             }
 
-            model.Fields = _combosHelper.GetComboFields();
-            model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-            model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            //model.Fields = _combosHelper.GetComboFields();
+            //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+            //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            model.Subjects = _combosHelper.GetComboSubjects();
             model.Professions = _combosHelper.GetComboProfessions();
             return View(model);
         }
 
 
 
-
-        public JsonResult GetDistricts(int fieldId)
+        public JsonResult GetUserSubjects(int subjectId)
         {
-            Field field = _context.Fields
-                .Include(f => f.Districts)
-                .FirstOrDefault(f => f.Id == fieldId);
-            if (field == null)
+
+
+            Subject subject = _context.Subjects
+                .Include(f => f.UserSubjects)
+                .FirstOrDefault(f => f.Id == subjectId);
+
+ 
+            if (subject == null)
             {
                 return null;
             }
 
-            return Json(field.Districts.OrderBy(d => d.Name));
+            return Json(subject.UserSubjects.OrderBy(d => d.Subject.Name));
         }
 
-        public JsonResult GetChurches(int districtId)
-        {
-            District district = _context.Districts
-                .Include(d => d.Churches)
-                .FirstOrDefault(d => d.Id == districtId);
-            if (district == null)
-            {
-                return null;
-            }
 
-            return Json(district.Churches.OrderBy(c => c.Name));
-        }
+
+        //public JsonResult GetDistricts(int fieldId)
+        //{
+        //    Field field = _context.Fields
+        //        .Include(f => f.Districts)
+        //        .FirstOrDefault(f => f.Id == fieldId);
+        //    if (field == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    return Json(field.Districts.OrderBy(d => d.Name));
+        //}
+
+        //public JsonResult GetChurches(int districtId)
+        //{
+        //    District district = _context.Districts
+        //        .Include(d => d.Churches)
+        //        .FirstOrDefault(d => d.Id == districtId);
+        //    if (district == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    return Json(district.Churches.OrderBy(c => c.Name));
+        //}
 
 
         public IEnumerable<SelectListItem> aux { get; set; }
@@ -335,17 +282,17 @@ namespace VirtualClassroom.WEB.Controllers
                 return NotFound();
             }
 
-            District district = await _context.Districts.FirstOrDefaultAsync(d => d.Churches.FirstOrDefault(c => c.Id == user.Church.Id) != null);
-            if (district == null)
-            {
-                district = await _context.Districts.FirstOrDefaultAsync();
-            }
+            //District district = await _context.Districts.FirstOrDefaultAsync(d => d.Churches.FirstOrDefault(c => c.Id == user.Church.Id) != null);
+            //if (district == null)
+            //{
+            //    district = await _context.Districts.FirstOrDefaultAsync();
+            //}
 
-            Field field = await _context.Fields.FirstOrDefaultAsync(f => f.Districts.FirstOrDefault(d => d.Id == district.Id) != null);
-            if (field == null)
-            {
-                field = await _context.Fields.FirstOrDefaultAsync();
-            }
+            //Field field = await _context.Fields.FirstOrDefaultAsync(f => f.Districts.FirstOrDefault(d => d.Id == district.Id) != null);
+            //if (field == null)
+            //{
+            //    field = await _context.Fields.FirstOrDefaultAsync();
+            //}
 
 
             Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
@@ -379,15 +326,15 @@ namespace VirtualClassroom.WEB.Controllers
                 PhoneNumber = user.PhoneNumber,
                 ImageId = user.ImageId,
 
-                Churches = _combosHelper.GetComboChurches(district.Id),
-                ChurchId = user.Church.Id,
-                Fields = _combosHelper.GetComboFields(),
-                FieldId = field.Id,
-                DistrictId = district.Id,
-                Districts = _combosHelper.GetComboDistricts(field.Id),
-
-                
-                Professions = aux,
+                //Churches = _combosHelper.GetComboChurches(district.Id),
+                //ChurchId = user.Church.Id,
+                //Fields = _combosHelper.GetComboFields(),
+                //FieldId = field.Id,
+                //DistrictId = district.Id,
+                //Districts = _combosHelper.GetComboDistricts(field.Id),
+                Subjects = _combosHelper.GetComboSubjects2(user.Id),
+                //Subjects =  _combosHelper.GetComboSubjects(),
+            Professions = aux,
 
                 ProfessionId = profession.Id,
                 Id = user.Id,
@@ -395,14 +342,8 @@ namespace VirtualClassroom.WEB.Controllers
                 Document = user.Document
 
 
-            };
+            };;
 
-                //await _context.Users.Where(u => u.Church.Id == user.Church.Id).Include(u => u.Profession).ToListAsync()
-
-
-;
-
-            //await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
 
             return View(model);
         }
@@ -427,7 +368,8 @@ namespace VirtualClassroom.WEB.Controllers
                 user.Address = model.Address;
                 user.PhoneNumber = model.PhoneNumber;
                 user.ImageId = imageId;
-                user.Church = await _context.Churches.FindAsync(model.ChurchId);
+                //user.Church = await _context.Churches.FindAsync(model.ChurchId);
+                //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
                 user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
                 user.Document = model.Document;
 
@@ -438,9 +380,10 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-            model.Fields = _combosHelper.GetComboFields();
-            model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-            model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            //model.Fields = _combosHelper.GetComboFields();
+            //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+            //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            model.Subjects = _combosHelper.GetComboSubjects();
             model.Professions = aux;
             //model.Professions = _combosHelper.GetComboProfessions();
             return View(model);
@@ -590,33 +533,7 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public List<SelectListItem> list =   _context.Professions.Where(p => p.Name != "Proffesor").Select(t => new SelectListItem
-        //{
-
-        //    Text = t.Name,
-        //    Value = $"{t.Id}"
-        //})
-        //        .OrderBy(t => t.Text)
-        //        .ToList();
-
-
+        
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -624,11 +541,10 @@ namespace VirtualClassroom.WEB.Controllers
         {
             AddUserViewModel model = new AddUserViewModel
             {
-                Fields = _combosHelper.GetComboFields(),
-                Districts = _combosHelper.GetComboDistricts(0),
-                Churches = _combosHelper.GetComboChurches(0),
-                //Professions = _combosHelper.GetComboProfessions()
-                Professions = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
+ 
+                Subjects = _combosHelper.GetComboSubjects(),    
+            //Professions = _combosHelper.GetComboProfessions()
+            Professions = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
                 {
 
                     Text = t.Name,
@@ -662,9 +578,10 @@ namespace VirtualClassroom.WEB.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");
-                    model.Fields = _combosHelper.GetComboFields();
-                    model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-                    model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+                    //model.Fields = _combosHelper.GetComboFields();
+                    //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+                    //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+                    model.Subjects = _combosHelper.GetComboSubjects();
                     model.Professions = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
                     {
 
@@ -697,9 +614,10 @@ namespace VirtualClassroom.WEB.Controllers
 
             }
 
-            model.Fields = _combosHelper.GetComboFields();
-            model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
-            model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            //model.Fields = _combosHelper.GetComboFields();
+            //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+            //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+            model.Subjects = _combosHelper.GetComboSubjects();
             model.Professions = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
             {
 
@@ -722,11 +640,7 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-
-
-
-
-
+ 
 
 
 

@@ -50,7 +50,59 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        $(document).ready(function () {
+         $(document).ready(function () {
+             $("#SubjectId").change(function () {
+                $("#UserSubjectId").empty();
+                 $("#UserSubjectId").append('<option value="0">[Select a District...]</option>');
+                //$("#ChurchId").empty();
+                //$("#ChurchId").append('<option value="0">[Select a Church...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetUserSubjects")',
+                    dataType: 'json',
+                    data: { subjectId: $("#SubjectId").val() },
+                    success: function (subcategories) {
+                        $.each(subcategories, function (i, UserSubject) {
+                            debugger;
+                            $("#UserSubjectId").append('<option value="'
+                                + UserSubject.id + '">'
+                                /*+ usersubject.name + '</option>'*/);
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve district.' + ex);
+                    }
+                });
+                return false;
+            })
+
+            @*$("#DistrictId").change(function () {
+                $("#ChurchId").empty();
+                $("#ChurchId").append('<option value="0">[Select a Church...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChurches")',
+                    dataType: 'json',
+                    data: { districtId: $("#DistrictId").val() },
+                    success: function (Churches) {
+                        $.each(Churches, function (i, Church) {
+                            debugger;
+                            $("#ChurchId").append('<option value="'
+                                + Church.id + '">'
+                                + Church.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve Church.' + ex);
+                    }
+                });
+                return false;
+            })*@
+        });
+
+
+
+        @*$(document).ready(function () {
             $("#FieldId").change(function () {
                 $("#DistrictId").empty();
                 $("#DistrictId").append('<option value="0">[Select a District...]</option>');
@@ -98,6 +150,6 @@
                 });
                 return false;
             })
-        });
+        });*@
     </script>
 }

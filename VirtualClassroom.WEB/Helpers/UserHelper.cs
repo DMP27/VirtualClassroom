@@ -54,7 +54,7 @@ namespace VirtualClassroom.WEB.Helpers
         public async Task<User> GetUserAsync(string email)
         {
             return await _context.Users
-                .Include(u => u.Church)
+                //.Include(u => u.Church)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
@@ -88,10 +88,14 @@ namespace VirtualClassroom.WEB.Helpers
         public async Task<User> AddUserAsync(AddUserViewModel model, Guid imageId, UserType userType)
         {
             //Console.WriteLine("LLEGA USERTYPE ------------------------>" + userType.ToString());
-            System.Diagnostics.Debug.WriteLine("LLEGA USERTYPE ------------------------>" + userType.ToString());
-         
+
+
+            //System.Diagnostics.Debug.WriteLine("PRUEBA subjectsssssss ------------------------>" + model.SubjectId);
+            //System.Diagnostics.Debug.WriteLine("PRUEBA subjectsssssss ------------------------>" + model.ProfessionId);
+
             User user = new User
             {
+                
                 Address = model.Address,
                 Document = model.Document,
                 Email = model.Username,
@@ -99,7 +103,10 @@ namespace VirtualClassroom.WEB.Helpers
                 LastName = model.LastName,
                 ImageId = imageId,
                 PhoneNumber = model.PhoneNumber,
-                Church = await _context.Churches.FindAsync(model.ChurchId),
+                //Church = await _context.Churches.FindAsync(model.ChurchId),
+                //UserSubjects = (ICollection<UserSubject>)model.Subjects,
+                //UserSubjects = (ICollection<UserSubject>)await _context.UserSubjects.FindAsync(model.Subjects),
+                //UserSubjects = model.SubjectId.ToArray().Count(),
                 UserName = model.Username,
                 UserType = userType,
                 Profession = await _context.Professions.FindAsync(model.ProfessionId),
@@ -114,8 +121,92 @@ namespace VirtualClassroom.WEB.Helpers
 
             User newUser = await GetUserAsync(model.Username);
             await AddUserToRoleAsync(newUser, user.UserType.ToString());
+
+            await addsubjectsAsync(user, model);
             return newUser;
         }
+
+
+
+
+        public async Task addsubjectsAsync(User user , AddUserViewModel model)
+        {
+
+            /*
+             *  Field field = await _context.Fields
+                    .Include(f => f.Districts)
+                    .FirstOrDefaultAsync(f => f.Id == district.IdField);
+                if (field == null)
+                {
+                    return NotFound();
+                }
+
+                try
+                {
+                    district.Id = 0;
+                    field.Districts.Add(district);
+                    _context.Update(field);
+                    await _context.SaveChangesAsync();
+             */
+            for (int i = 0; i <= 2; i++)
+            {
+                Subject subject = await _context.Subjects
+                .Include(s => s.UserSubjects)
+                .FirstOrDefaultAsync(f => f.Id == model.SubjectId[i]);
+
+                subject.UserSubjects.Add(new UserSubject
+                {
+                    User = await _context.Users.FindAsync(user.Id)
+                });
+
+                _context.Update(subject);
+                await _context.SaveChangesAsync();
+                //field.Districts.Add(district);
+                //_context.Update(field);
+                //await _context.SaveChangesAsync();
+            }
+
+            //_context.Subjects.u
+
+            //_context.Subjects.Add(new Subject
+            //    {
+
+            //        Name = "Math",
+
+            //        UserSubjects = new List<UserSubject>
+            //        {
+            //                            new UserSubject {
+            //                                               User = await _context.Users.FindAsync(user.Id) },
+
+            //        }
+
+
+
+            //    });
+            //    _context.Subjects.Add(new Subject
+            //    {
+            //        Name = "Chemistry",
+            //        UserSubjects = new List<UserSubject>
+            //        {
+            //                            new UserSubject {
+            //                                               User = await _context.Users.FindAsync("600") },
+
+
+            //        }
+            //    });
+            //    _context.Subjects.Add(new Subject
+            //    {
+            //        Name = "English"
+
+            //    });
+                //await _context.SaveChangesAsync();         
+
+        }
+
+
+
+
+
 
 
 
@@ -136,7 +227,7 @@ namespace VirtualClassroom.WEB.Helpers
         public async Task<User> GetUserAsync(Guid userId)
         {
             return await _context.Users
-                .Include(u => u.Church)
+                //.Include(u => u.Church)
                 .FirstOrDefaultAsync(u => u.Id == userId.ToString());
         }
 

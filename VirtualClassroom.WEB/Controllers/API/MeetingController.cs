@@ -348,24 +348,24 @@ namespace VirtualClassroom.WEB.Controllers.API
         //    return Ok (await _context.Meetings.Where(m => m.Church.Id == user.Church.Id).Include(m => m.Assistances).ToListAsync());
         //}
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet]
-        //[Route("GetMeetingu")]
-        public async Task<IActionResult> GetMeeting()
-        {
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[HttpGet]
+        ////[Route("GetMeetingu")]
+        //public async Task<IActionResult> GetMeeting()
+        //{
 
 
-            string email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            User user = await _userHelper.GetUserAsync(email);
-            if (user == null)
-            {
-                return NotFound("Error001");
-            }
+        //    string email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        //    User user = await _userHelper.GetUserAsync(email);
+        //    if (user == null)
+        //    {
+        //        return NotFound("Error001");
+        //    }
 
 
 
-            return Ok(await _context.Meetings.Where(m => m.Church.Id == user.Church.Id).Include(m => m.Assistances).ToListAsync());
-        }
+        //    return Ok(await _context.Meetings.Where(m => m.Church.Id == user.Church.Id).Include(m => m.Assistances).ToListAsync());
+        //}
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[HttpGet]

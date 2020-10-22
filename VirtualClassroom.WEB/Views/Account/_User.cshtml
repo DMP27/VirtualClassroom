@@ -37,32 +37,145 @@
     <span asp-validation-for="ImageFile" class="text-danger"></span>
 </div>
 
-<div class="form-group">
-    <label asp-for="FieldId" class="control-label"></label>
-    <select asp-for="FieldId" asp-items="Model.Fields" class="form-control"></select>
-    <span asp-validation-for="FieldId" class="text-danger"></span>
-</div>
+@*<div class="form-group">
+        <label asp-for="FieldId" class="control-label"></label>
+        <select asp-for="FieldId" asp-items="Model.Fields" class="form-control"></select>
+        <span asp-validation-for="FieldId" class="text-danger"></span>
+    </div>
 
-<div class="form-group">
-    <label asp-for="DistrictId" class="control-label"></label>
-    <select asp-for="DistrictId" asp-items="Model.Districts" class="form-control"></select>
-    <span asp-validation-for="DistrictId" class="text-danger"></span>
-</div>
+    <div class="form-group">
+        <label asp-for="DistrictId" class="control-label"></label>
+        <select asp-for="DistrictId" asp-items="Model.Districts" class="form-control"></select>
+        <span asp-validation-for="DistrictId" class="text-danger"></span>
+    </div>
 
-<div class="form-group">
-    <label asp-for="ChurchId" class="control-label"></label>
-    <select asp-for="ChurchId" asp-items="Model.Churches" class="form-control"></select>
-    <span asp-validation-for="ChurchId" class="text-danger"></span>
-</div>
+    <div class="form-group">
+        <label asp-for="ChurchId" class="control-label"></label>
+        <select asp-for="ChurchId" asp-items="Model.Churches" class="form-control"></select>
+        <span asp-validation-for="ChurchId" class="text-danger"></span>
+    </div>*@
 
+@*<div class="form-group" readonly>
+
+        <label asp-for="SubjectId" class="control-label"></label>
+
+        <select multiple="multiple" asp-for="SubjectId" asp-items="Model.Subjects" class="form-control"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>*@
+
+@*<div class="form-group" readonly>
+
+        <label asp-for="SubjectId" class="control-label"></label>
+
+        <select multiple="multiple" class="multi-select" asp-for="SubjectId" asp-items="Model.Subjects"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>*@
 
 <div class="form-group">
     <label asp-for="ProfessionId" class="control-label"></label>
     <select asp-for="ProfessionId" asp-items="Model.Professions" class="form-control"></select>
     <span asp-validation-for="ProfessionId" class="text-danger"></span>
 </div>
-    <!-- <div class="form-group">
-        <label asp-for="ProfessionId" class="control-label"></label>
-        <select asp-for="ProfessionId" asp-items="Model.Professions" class="form-control"></select>
-        <span asp-validation-for="ProfessionId" class="text-danger"></span>
-    </div> -->
+
+
+<div class="form-group">
+    <label asp-for="SubjectId" class="control-label"></label>
+    <select asp-for="SubjectId" asp-items="@Model.Subjects" class="form-control"></select>
+    <span asp-validation-for="SubjectId" class="text-danger"></span>
+</div>
+
+
+
+<!-- <div class="form-group">
+    <label asp-for="ProfessionId" class="control-label"></label>
+    <select asp-for="ProfessionId" asp-items="Model.Professions" class="form-control"></select>
+    <span asp-validation-for="ProfessionId" class="text-danger"></span>
+</div> -->
+@*@{List<int> indexList = new List<int>();
+        indexList.Add(1);
+        indexList.Add(4);
+    }
+
+
+    <ej-list-box id="listboxsample" datasource="Model.Professions" selected-itemlist="indexList" allow-multi-selection="true">
+        <e-list-box-fields id="empid" text="text" />
+    </ej-list-box>*@
+
+
+
+@*<select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+    <option value="AL">Alabama</option>
+    <option value="WY">Wyoming</option>
+</select>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+}*@
+
+
+
+@*<div class="form-group">
+        <label asp-for="SubjectId" class="control-label"></label>
+        <select asp-for="SubjectId" asp-items="Model.Subjects"    class="form-control"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>*@
+
+
+
+@*<div class="form-group">
+        <label asp-for="SubjectId" class="control-label"></label>
+        <select asp-for="SubjectId" multiple="multiple" asp-items="Model.Subjects" class="form-control"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>*@
+
+
+
+
+@*<div class="form-group">
+        <label asp-for="SubjectId" class="control-label"></label>
+        <select asp-for="SubjectId" asp-items="Model.Subjects" class="form-control" multiple></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>*@
+
+
+
+
+
+@*<div class="form-group">
+
+        <select asp-for="SubjectId" asp-items="Model.Subjects" class="form-control"></select>
+
+    </div>*@
+
+
+
+
+
+
+
+@*<div class="form-group row">
+        <label asp-for="SubjectId" class="col-sm-2 col-sm-offset-2 form-control-label"></label>
+        <div class="col-md-6">
+            <select asp-for="SubjectId" multiple="multiple" asp-items="Model.Subjects" class="form-control selectpicker bs-select-hidden"></select>
+        </div>
+    </div>*@
+
+@*<p><strong>Select your favorite species of flamingo. You may control-click (Windows) or command-click (Mac) to select more than one.</strong></p>
+
+    <select multiple size="6">
+        <option value="American">American flamingo</option>
+        <option value="Andean">Andean flamingo</option>
+        <option value="Chilean">Chilean flamingo</option>
+        <option value="Greater">Greater flamingo</option>
+        <option value="James's">James's flamingo</option>
+        <option value="Lesser">Lesser flamingo</option>
+    </select>*@

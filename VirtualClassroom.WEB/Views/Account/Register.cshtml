@@ -50,7 +50,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        $(document).ready(function () {
+        @*$(document).ready(function () {
             $("#FieldId").change(function () {
                 $("#DistrictId").empty();
                 $("#DistrictId").append('<option value="0">[Select a District...]</option>');
@@ -98,6 +98,6 @@
                 });
                 return false;
             })
-        });
+        });*@
     </script>
 }

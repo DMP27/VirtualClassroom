@@ -27,6 +27,12 @@ namespace VirtualClassroom.WEB.Data
 
         public DbSet<Assistance> Assistances { get; set; }
 
+        public DbSet<Classwork> Classworks { get; set; }
+
+        public DbSet<Subject> Subjects { get; set; }
+
+        public DbSet<UserSubject> UserSubjects { get; set; }
+
 
 
 
@@ -48,6 +54,21 @@ namespace VirtualClassroom.WEB.Data
               .HasIndex(t => t.Id)
               .IsUnique();
 
+
+
+
+
+            modelBuilder.Entity<Classwork>()
+                .HasIndex(t => t.Id)
+                .IsUnique();
+
+            modelBuilder.Entity<Subject>()
+                  .HasIndex(t => t.Id)
+                  .IsUnique();
+
+            modelBuilder.Entity<UserSubject>()
+              .HasIndex(t => t.Id)
+              .IsUnique();
 
 
             modelBuilder.Entity<Field>(fie =>

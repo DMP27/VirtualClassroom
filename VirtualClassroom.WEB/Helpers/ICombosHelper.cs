@@ -9,11 +9,13 @@ namespace VirtualClassroom.WEB.Helpers
 {
     public interface ICombosHelper
     {
-        IEnumerable<SelectListItem> GetComboFields();
+        IEnumerable<SelectListItem> GetComboSubjects();
 
-        IEnumerable<SelectListItem> GetComboDistricts(int fieldId);
+        IEnumerable<SelectListItem> GetComboSubjects2(String userId);
 
-        IEnumerable<SelectListItem> GetComboChurches(int districtId);
+        //IEnumerable<SelectListItem> GetComboDistricts(int fieldId);
+
+        //IEnumerable<SelectListItem> GetComboChurches(int districtId);
 
         IEnumerable<SelectListItem> GetComboProfessions();
         IEnumerable<SelectListItem> GetComboProfessions2(User user1);

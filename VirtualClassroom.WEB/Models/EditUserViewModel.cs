@@ -49,26 +49,26 @@ namespace VirtualClassroom.WEB.Models
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
 
-        [Required]
-        [Display(Name = "Field")]
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a Field.")]
-        public int FieldId { get; set; }
+        //[Required]
+        //[Display(Name = "Field")]
+        //[Range(1, int.MaxValue, ErrorMessage = "You must select a Field.")]
+        //public int FieldId { get; set; }
 
-        public IEnumerable<SelectListItem> Fields { get; set; }
+        //public IEnumerable<SelectListItem> Fields { get; set; }
 
-        [Required]
-        [Display(Name = "District")]
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a District.")]
-        public int DistrictId { get; set; }
+        //[Required]
+        //[Display(Name = "District")]
+        //[Range(1, int.MaxValue, ErrorMessage = "You must select a District.")]
+        //public int DistrictId { get; set; }
 
-        public IEnumerable<SelectListItem> Districts { get; set; }
+        //public IEnumerable<SelectListItem> Districts { get; set; }
 
-        [Required]
-        [Display(Name = "Church")]
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a Church.")]
-        public int ChurchId { get; set; }
+        //[Required]
+        //[Display(Name = "Church")]
+        //[Range(1, int.MaxValue, ErrorMessage = "You must select a Church.")]
+        //public int ChurchId { get; set; }
 
-        public IEnumerable<SelectListItem> Churches { get; set; }
+        //public IEnumerable<SelectListItem> Churches { get; set; }
 
 
 
@@ -78,6 +78,28 @@ namespace VirtualClassroom.WEB.Models
         public int ProfessionId { get; set; }
 
         public IEnumerable<SelectListItem> Professions { get; set; }
+
+ 
+        //[Required]
+        [Display(Name = "Subject")]
+        //[Range(1, 3, ErrorMessage = "You must select a Subject.")]
+        //public int SubjectId { get; set; }
+        //public IEnumerable<SelectListItem> SubjectId { get; set; }
+        //[Range(2, int.MaxValue, ErrorMessage = "You must select a Subject.")]
+        //public MultiSelectList SubjectId { get; set; }
+        //public string[] SubjectId { get; set; }
+        public int[] SubjectId { get; set; }
+
+        //public IEnumerable<SelectListItem> SubjectId { get; set; }
+        // public IEnumerable<SelectListItem> SubjectId { get; set; }
+        //public ICollection<SelectListItem> SubjectId { get; set; }
+        //public int UserSubjectsNumber => SubjectId == null ? 0 : SubjectId.Count;
+
+
+
+        //public List<SelectListItem> SubjectId { get; set; }
+
+        public IEnumerable<SelectListItem> Subjects { get; set; }
     }
 
 }
