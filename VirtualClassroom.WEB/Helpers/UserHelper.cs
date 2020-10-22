@@ -148,7 +148,9 @@ namespace VirtualClassroom.WEB.Helpers
                     _context.Update(field);
                     await _context.SaveChangesAsync();
              */
-            for (int i = 0; i <= 2; i++)
+
+            int long1 = model.SubjectId.ToList().Count();
+            for (int i = 0; i <= long1-1; i++)
             {
                 Subject subject = await _context.Subjects
                 .Include(s => s.UserSubjects)
