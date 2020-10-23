@@ -29,9 +29,12 @@ namespace VirtualClassroom.WEB.Helpers
 
 
         Task<User> AddUserAsync(AddUserViewModel model, Guid imageId, UserType userType);
-
-
+        Task<User> AddUserteacherAsync(AddUserViewModel model, Guid imageId, UserType userType);
+        
         Task addsubjectsAsync(User user, AddUserViewModel model);
+
+        //Task getsubjectsAsync(AddUserViewModel model);
+
 
         //public async Task addsubjectsAsync(User user, AddUserViewModel model);
 

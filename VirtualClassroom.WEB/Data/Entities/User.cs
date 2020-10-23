@@ -134,9 +134,9 @@ namespace VirtualClassroom.WEB.Data.Entities
         public Profession Profession { get; set; }
 
 
-
-        [JsonIgnore]
-        [NotMapped]
+        [Display(Name = "subject  ID")]
+        //[JsonIgnore]
+        //[NotMapped]
         public int IdSubject { get; set; }
  
 

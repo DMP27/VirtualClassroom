@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -78,11 +79,73 @@ namespace VirtualClassroom.WEB.Controllers
                 profession = await _context.Professions.FirstOrDefaultAsync();
             }
 
+            //ICollection<UserSubject> UserSubject = (ICollection<UserSubject>)await _context.UserSubjects.FirstOrDefaultAsync(p => p.User.Id == user.Id);
 
-             
-            return View(await _context.Users.Where(u => u.IdSubject == user.IdSubject).Include(u => u.Profession).ToListAsync());
+            //UserSubject usersubject = await _context.UserSubjects.FirstOrDefaultAsync(p => p.User.Id == user.Id);
 
-    
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(p => p.Id == user.UserSubjects).ToListAsync();
+            //UserSubject usersubject = await _context.UserSubjects.Where(p => p.Subject.Id == usersubject.Subject.Id).ToListAsync();
+
+            //User user2 = await _context.Users.FirstOrDefaultAsync(f => f.UserSubjects.FirstOrDefault(d => d.Id == usersubject.Id) != null);
+            // await _context.Users.Where(u => u.IdSubject == usersubject.Id).ToListAsync();
+
+            // User user2 = await _context.Users.FirstOrDefaultAsync(u => u.UserSubjects.FirstOrDefault(a => a.Id == UserSubject)).ToListAsync();
+
+            //return View(await _context.Users.Where(u => u.UserSubjects == usersubject).ToListAsync());
+            //return View(await _context.UserSubjects.Where(p => p.Subject.Id == usersubject.Subject.Id).ToListAsync());
+
+            //            return await _context.Users.Include(u => u.UserSubjects.FirstOrDefault(a => a.User.Id == userId.ToString()))
+
+            //.FirstOrDefaultAsync(u => u.Id == userId.ToString());
+
+
+
+
+            //List<SelectListItem> list = _context.UserSubjects.Where(u => u.User.Id == user.Id).
+
+            //    Select(t => new SelectListItem
+            //    {
+            //        Text = t.Subject.Name,
+            //        Value = $"{t.Id}"
+            //    })
+            //    .ToList();
+
+
+            ////Subject subject = await _context.Subjects.
+
+            //ICollection<UserSubject> UserSubject2 = (ICollection<UserSubject>)await _context.UserSubjects.FirstOrDefaultAsync(p => p.User.Id == user.Id);
+
+            //return View(await _context.UserSubjects.Where(u => u.User.Id == user.Id).Include(a => a.Subject).ToListAsync());
+            //return View(await _context.UserSubjects.Where(u => u.Subject == user.UserSubjects
+            //).Include(a => a.Subject).Include(f => f.User).ToListAsync());
+
+
+            //return View(await _context.Users.Where(u => UserSubject2.Contains(u.UserSubjects) == user.UserSubjects
+            //                    ).Include(a => a.Subject).Include(f => f.User).ToListAsync());
+
+            //return View(await _context.UserSubjects.Where(u => u.Subject == user.UserSubjects.Where(k => k.User.Id == user.Id)
+            //).Include(a => a.Subject).Include(f => f.User).ToListAsync());
+
+            int prueba = user.IdSubject;
+
+            return View(await _context.UserSubjects.
+                Where(u => u.Subject.Id == user.IdSubject).
+                Include(a => a.Subject).Include(f => f.User).ToListAsync());
+            //return View(await _context.Users.Where(u => u.UserSubjects) UserSubjects.Where(p => p.Subject.Id == 1
+            //).ToListAsync()
+            //);
+            //return View(await _context.Users.Where(u => u..Subject.Id == usersubject.Subject.Id).ToListAsync());
+
+
+
+            //return View( await _context.Users.
+            //    FirstOrDefaultAsync(d => d.UserSubjects.FirstOrDefault(c => c.Subject.Id == user.UserSubjects.
+            //    FirstOrDefault(u => u.Subject.Id)
+            //    ) != null)
+
+            //Where(u => u.IdSubject == user.IdSubject).Include(u => u.Profession).ToListAsync()    );
+
+
         }
 
 
@@ -273,7 +336,9 @@ namespace VirtualClassroom.WEB.Controllers
 
 
         public IEnumerable<SelectListItem> aux { get; set; }
+        public IEnumerable<SelectListItem> aux2 { get; set; }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> ChangeUser()
         {
             User user = await _userHelper.GetUserAsync(User.Identity.Name);
@@ -301,8 +366,23 @@ namespace VirtualClassroom.WEB.Controllers
                 profession = await _context.Professions.FirstOrDefaultAsync();
             }
 
+            Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
+            if (subject == null)
+            {
+                subject = await _context.Subjects.FirstOrDefaultAsync();
+            }
+
             if (user.UserType.ToString() == "Teacher")
             {
+                aux2 = _context.Subjects.Where(s => s.Id == user.IdSubject).Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                .ToList();
+
+
 
                 aux = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
                 {
@@ -314,6 +394,9 @@ namespace VirtualClassroom.WEB.Controllers
             }
             else
             {
+                user.IdSubject = 0;
+                //subject.Name = "d";
+                aux2 = _combosHelper.GetComboSubjects2(user.Id);
                 aux = _combosHelper.GetComboProfessions2(user);
             }
 
@@ -332,7 +415,11 @@ namespace VirtualClassroom.WEB.Controllers
                 //FieldId = field.Id,
                 //DistrictId = district.Id,
                 //Districts = _combosHelper.GetComboDistricts(field.Id),
-                Subjects = _combosHelper.GetComboSubjects2(user.Id),
+                IdSubject = user.IdSubject,
+                Subjects = aux2,
+                IdSubjectname = subject.Name,
+                //Subjects = _combosHelper.GetComboSubjects2(user.Id),
+                
                 //Subjects =  _combosHelper.GetComboSubjects(),
             Professions = aux,
 
@@ -347,6 +434,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "User")]
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -370,6 +458,7 @@ namespace VirtualClassroom.WEB.Controllers
                 user.ImageId = imageId;
                 //user.Church = await _context.Churches.FindAsync(model.ChurchId);
                 //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
+                user.IdSubject = model.IdSubject;
                 user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
                 user.Document = model.Document;
 
@@ -383,11 +472,200 @@ namespace VirtualClassroom.WEB.Controllers
             //model.Fields = _combosHelper.GetComboFields();
             //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
             //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+           
             model.Subjects = _combosHelper.GetComboSubjects();
             model.Professions = aux;
             //model.Professions = _combosHelper.GetComboProfessions();
             return View(model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> ChangeUserTeacher()
+        {
+            User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
+            if (profession == null)
+            {
+                profession = await _context.Professions.FirstOrDefaultAsync();
+            }
+
+            Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
+            if (subject == null)
+            {
+                subject = await _context.Subjects.FirstOrDefaultAsync();
+            }
+
+            if (user.UserType.ToString() == "Teacher")
+            {
+                aux2 = _context.Subjects.Where(s => s.Id == user.IdSubject).Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                .ToList();
+
+
+
+                aux = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                  .ToList();
+            }
+            else
+            {
+                user.IdSubject = 0;
+                //subject.Name = "d";
+                aux2 = _combosHelper.GetComboSubjects2(user.Id);
+                aux = _combosHelper.GetComboProfessions2(user);
+            }
+
+            EditUserViewModel model = new EditUserViewModel
+            {
+
+                Address = user.Address,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                ImageId = user.ImageId,
+
+                //Churches = _combosHelper.GetComboChurches(district.Id),
+                //ChurchId = user.Church.Id,
+                //Fields = _combosHelper.GetComboFields(),
+                //FieldId = field.Id,
+                //DistrictId = district.Id,
+                //Districts = _combosHelper.GetComboDistricts(field.Id),
+                IdSubject = user.IdSubject,
+                Subjects = aux2,
+                IdSubjectname = subject.Name,
+                //Subjects = _combosHelper.GetComboSubjects2(user.Id),
+
+                //Subjects =  _combosHelper.GetComboSubjects(),
+                Professions = aux,
+
+                ProfessionId = profession.Id,
+                Id = user.Id,
+
+                Document = user.Document
+
+
+            }; ;
+
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeUserTeacher(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid imageId = model.ImageId;
+
+                if (model.ImageFile != null)
+                {
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+                }
+
+                User user = await _userHelper.GetUserAsync(User.Identity.Name);
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.Address = model.Address;
+                user.PhoneNumber = model.PhoneNumber;
+                user.ImageId = imageId;
+                //user.Church = await _context.Churches.FindAsync(model.ChurchId);
+                //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
+                user.IdSubject = model.IdSubject;
+                user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
+                user.Document = model.Document;
+
+
+                await _userHelper.UpdateUserAsync(user);
+                return RedirectToAction("Index", "Home");
+            }
+
+
+
+            //model.Fields = _combosHelper.GetComboFields();
+            //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+            //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+
+            model.Subjects = _combosHelper.GetComboSubjects();
+            model.Professions = aux;
+            //model.Professions = _combosHelper.GetComboProfessions();
+            return View(model);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -574,7 +852,7 @@ namespace VirtualClassroom.WEB.Controllers
                 }
                 
 
-                User user = await _userHelper.AddUserAsync(model, imageId, UserType.Teacher);
+                User user = await _userHelper.AddUserteacherAsync(model, imageId, UserType.Teacher);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");

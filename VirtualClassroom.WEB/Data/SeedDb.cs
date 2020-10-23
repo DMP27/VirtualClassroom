@@ -393,7 +393,7 @@ namespace VirtualClassroom.WEB.Data
                     UserSubjects = new List<UserSubject>
                     {
                                         new UserSubject {
-                                                           User = await _context.Users.FindAsync("600") },
+                                                           User = await _context.Users.FindAsync("606") },
 
 
                     }

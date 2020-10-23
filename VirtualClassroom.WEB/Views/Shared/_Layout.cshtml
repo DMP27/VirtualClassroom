@@ -44,13 +44,15 @@
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
                     {
+                        @*<li><a asp-area="" asp-controller="Account" asp-action="ChangeUserTeacher">@User.Identity.Name</a></li>*@
 
-                        @*<li><a asp-area="" asp-controller="Account" asp-action="StudentsList">Students List</a></li>
-                        <li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
+                        <li><a asp-area="" asp-controller="Account" asp-action="StudentsList">Students List</a></li>
+                        @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
 
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                     {
+                        @*<li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>*@
                         @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
                     }
 
@@ -58,9 +60,17 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <li><a asp-area="" asp-controller="Account" asp-action="ChangeUserTeacher">@User.Identity.Name</a></li>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
+                        }
+                        @*<li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>*@
                         <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
-                       
+
                     }
                     else
                     {

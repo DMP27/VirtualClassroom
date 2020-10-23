@@ -90,6 +90,10 @@ namespace VirtualClassroom.WEB.Models
         //public string[] SubjectId { get; set; }
         public int[] SubjectId { get; set; }
 
+
+        public int IdSubject { get; set; }
+
+        public string IdSubjectname { get; set; }
         //public IEnumerable<SelectListItem> SubjectId { get; set; }
         // public IEnumerable<SelectListItem> SubjectId { get; set; }
         //public ICollection<SelectListItem> SubjectId { get; set; }
