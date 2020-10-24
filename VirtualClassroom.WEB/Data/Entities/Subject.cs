@@ -22,5 +22,11 @@ namespace VirtualClassroom.WEB.Data.Entities
         public ICollection<UserSubject> UserSubjects { get; set; }
         [DisplayName("Subjects Number")]
         public int UserSubjectsNumber => UserSubjects == null ? 0 : UserSubjects.Count;
+
+
+
+        public ICollection<Classwork> Classworks { get; set; }
+        [DisplayName("Subjects Number")]
+        public int ClassworksNumber => Classworks == null ? 0 : Classworks.Count;
     }
 }

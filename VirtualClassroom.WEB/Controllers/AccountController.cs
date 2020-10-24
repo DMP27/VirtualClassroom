@@ -485,6 +485,227 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        [Authorize(Roles = "User")]
+
+        public async Task<IActionResult> UserSubjectList()
+        {
+            User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+
+
+            Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
+            if (profession == null)
+            {
+                profession = await _context.Professions.FirstOrDefaultAsync();
+            }
+
+            Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
+            if (subject == null)
+            {
+                subject = await _context.Subjects.FirstOrDefaultAsync();
+            }
+
+            if (user.UserType.ToString() == "Teacher")
+            {
+                aux2 = _context.Subjects.Where(s => s.Id == user.IdSubject).Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                .ToList();
+
+
+
+                aux = _context.Professions.Where(p => p.Name == "Proffesor").Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                  .ToList();
+            }
+            else
+            {
+                user.IdSubject = 0;
+                //subject.Name = "d";
+                aux2 = _combosHelper.GetComboSubjects2(user.Id);
+                aux = _combosHelper.GetComboProfessions2(user);
+            }
+
+            EditUserViewModel model = new EditUserViewModel
+            {
+
+                //Address = user.Address,
+                //FirstName = user.FirstName,
+                //LastName = user.LastName,
+                //PhoneNumber = user.PhoneNumber,
+                //ImageId = user.ImageId,
+
+                //Churches = _combosHelper.GetComboChurches(district.Id),
+                //ChurchId = user.Church.Id,
+                //Fields = _combosHelper.GetComboFields(),
+                //FieldId = field.Id,
+                //DistrictId = district.Id,
+                //Districts = _combosHelper.GetComboDistricts(field.Id),
+                IdSubject = user.IdSubject,
+                Subjects = aux2,
+                IdSubjectname = subject.Name,
+                //Subjects = _combosHelper.GetComboSubjects2(user.Id),
+
+                //Subjects =  _combosHelper.GetComboSubjects(),
+                Professions = aux,
+
+                ProfessionId = profession.Id,
+                Id = user.Id
+
+                //Document = user.Document
+
+
+            }; ;
+
+
+            return View(model);
+        }
+
+        public int subjectaux;
+        [Authorize(Roles = "User")]
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserSubjectList(EditUserViewModel model)
+        {
+
+           // subjectaux = model.SubjectId[0];
+           
+            return RedirectToAction("ClassWorkUser", new { model1 = model});
+
+            //if (ModelState.IsValid)
+            //{
+            //    Guid imageId = model.ImageId;
+
+            //    if (model.ImageFile != null)
+            //    {
+            //        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+            //    }
+
+            //    User user = await _userHelper.GetUserAsync(User.Identity.Name);
+
+            //    user.FirstName = model.FirstName;
+            //    user.LastName = model.LastName;
+            //    user.Address = model.Address;
+            //    user.PhoneNumber = model.PhoneNumber;
+            //    user.ImageId = imageId;
+            //    //user.Church = await _context.Churches.FindAsync(model.ChurchId);
+            //    //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
+            //    user.IdSubject = model.IdSubject;
+            //    user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
+            //    user.Document = model.Document;
+
+
+            //    await _userHelper.UpdateUserAsync(user);
+            //    return RedirectToAction("Index", "Home");
+            //}
+
+
+
+            //model.Fields = _combosHelper.GetComboFields();
+            //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
+            //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
+
+            //model.Subjects = _combosHelper.GetComboSubjects();
+            //model.Professions = aux;
+            ////model.Professions = _combosHelper.GetComboProfessions();
+            //return View(model);
+        }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ClassWorkUser(EditUserViewModel model)
+        //{
+
+        //    int p = model.SubjectId[0];
+        //    return RedirectToAction("Index", "Home");
+
+        //    return View(model);
+        //}
+
+
+
+        [Authorize(Roles = "User")]
+  
+        public async Task<IActionResult> ClassWorkUser(EditUserViewModel model1)
+        {
+  
+            return View(model1);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

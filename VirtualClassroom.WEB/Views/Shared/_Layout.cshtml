@@ -3,6 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+
+
+
+
     @*<title>@ViewData["Title"] - VirtualClassroom.WEB</title>*@
     <title>@ViewData["Title"] - Spiritual Healing</title>
 
@@ -52,8 +61,10 @@
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                     {
+                        <li><a asp-area="" asp-controller="Account" asp-action="UserSubjectList"> My subjects</a></li>
                         @*<li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>*@
                         @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
+                       
                     }
 
                 </ul>

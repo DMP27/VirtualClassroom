@@ -116,10 +116,10 @@ namespace VirtualClassroom.WEB.Data.Entities
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
 
-        public ICollection<Classwork> Classworks { get; set; }
+        public ICollection<UserClassWork> UserClassWorks { get; set; }
 
-        [DisplayName("Files Number")]
-        public int FilesNumber => Classworks == null ? 0 : Classworks.Count;
+        [DisplayName("UserClassWorks Number")]
+        public int UserClassWorksNumber => UserClassWorks == null ? 0 : UserClassWorks.Count;
 
 
 

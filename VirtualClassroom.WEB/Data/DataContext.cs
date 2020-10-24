@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtualClassroom.Common.Entities;
@@ -34,6 +35,12 @@ namespace VirtualClassroom.WEB.Data
         public DbSet<UserSubject> UserSubjects { get; set; }
 
 
+
+        public DbSet<FileClassroom> FileClassrooms { get; set; }
+
+        public DbSet<UserClassWork> UserClassWorks { get; set; }
+
+  
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,6 +76,19 @@ namespace VirtualClassroom.WEB.Data
             modelBuilder.Entity<UserSubject>()
               .HasIndex(t => t.Id)
               .IsUnique();
+
+
+
+
+            modelBuilder.Entity<FileClassroom>()
+             .HasIndex(t => t.Id)
+             .IsUnique();
+
+            modelBuilder.Entity<UserClassWork>()
+              .HasIndex(t => t.Id)
+              .IsUnique();
+
+
 
 
             modelBuilder.Entity<Field>(fie =>

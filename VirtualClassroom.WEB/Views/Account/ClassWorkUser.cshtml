@@ -1,0 +1,121 @@
+﻿
+@model int
+
+
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+
+
+
+<h2>Edit</h2>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="ClassWorkUser" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            @*<partial name="_UserTeacher" />*@
+            @*<partial name="_User" />*@
+
+            
+
+            @*<div class="form-group">
+                    <label asp-for="SubjectId" class="control-label"></label>
+                    <select asp-for="SubjectId" asp-items="@Model.Subjects" class="form-control"></select>
+                    <span asp-validation-for="SubjectId" class="text-danger"></span>
+                </div>*@
+
+
+         
+
+
+
+
+
+            @*<div class="container">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                            Tutorials
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+                        </ul>
+                    </div>
+                </div>*@
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        @*$(document).ready(function () {
+            $("#FieldId").change(function () {
+                $("#DistrictId").empty();
+                $("#DistrictId").append('<option value="0">[Select a District...]</option>');
+                $("#ChurchId").empty();
+                $("#ChurchId").append('<option value="0">[Select a Church...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDistricts")',
+                    dataType: 'json',
+                    data: { fieldId: $("#FieldId").val() },
+                    success: function (subcategories) {
+                        $.each(subcategories, function (i, district) {
+                            debugger;
+                            $("#DistrictId").append('<option value="'
+                                + district.id + '">'
+                                + district.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve Districts.' + ex);
+                    }
+                });
+                return false;
+            })
+
+            $("#DistrictId").change(function () {
+                $("#ChurchId").empty();
+                $("#ChurchId").append('<option value="0">[Select a Church...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChurches")',
+                    dataType: 'json',
+                    data: { districtId: $("#DistrictId").val() },
+                    success: function (churches) {
+                        $.each(churches, function (i, church) {
+                            debugger;
+                            $("#ChurchId").append('<option value="'
+                                + church.id + '">'
+                                + church.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve Churches.' + ex);
+                    }
+                });
+                return false;
+            })
+        });*@
+    </script>
+}
