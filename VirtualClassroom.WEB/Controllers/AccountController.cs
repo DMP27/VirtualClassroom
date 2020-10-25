@@ -126,8 +126,9 @@ namespace VirtualClassroom.WEB.Controllers
             //return View(await _context.UserSubjects.Where(u => u.Subject == user.UserSubjects.Where(k => k.User.Id == user.Id)
             //).Include(a => a.Subject).Include(f => f.User).ToListAsync());
 
-            int prueba = user.IdSubject;
-
+            //Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
+            ////int prueba = user.IdSubjectname;
+            //string prueba = subject.Name;
             return View(await _context.UserSubjects.
                 Where(u => u.Subject.Id == user.IdSubject).
                 Include(a => a.Subject).Include(f => f.User).ToListAsync());
@@ -485,8 +486,8 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-        [Authorize(Roles = "User")]
-
+        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Teacher")]
         public async Task<IActionResult> UserSubjectList()
         {
             User user = await _userHelper.GetUserAsync(User.Identity.Name);
@@ -574,8 +575,8 @@ namespace VirtualClassroom.WEB.Controllers
         }
 
         public int subjectaux;
-        [Authorize(Roles = "User")]
-
+        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserSubjectList(EditUserViewModel model)
@@ -640,7 +641,7 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Teacher")]
   
         public async Task<IActionResult> ClassWorkUser(int axusubject)
         {
