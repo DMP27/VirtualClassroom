@@ -151,7 +151,7 @@ namespace VirtualClassroom.WEB.Helpers
                 Select(t => new SelectListItem
             {
                 Text = t.Subject.Name,
-                Value = $"{t.Id}"
+                Value = $"{t.Subject.Id}"
             })
             .OrderBy(t => t.Text)
             .ToList();

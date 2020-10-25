@@ -581,9 +581,11 @@ namespace VirtualClassroom.WEB.Controllers
         public async Task<IActionResult> UserSubjectList(EditUserViewModel model)
         {
 
-           // subjectaux = model.SubjectId[0];
-           
-            return RedirectToAction("ClassWorkUser", new { model1 = model});
+
+            //int[] model2 = model.SubjectId;
+
+            subjectaux = model.SubjectId[0];
+            return  RedirectToAction("ClassWorkUser", new { axusubject = subjectaux });
 
             //if (ModelState.IsValid)
             //{
@@ -640,10 +642,14 @@ namespace VirtualClassroom.WEB.Controllers
 
         [Authorize(Roles = "User")]
   
-        public async Task<IActionResult> ClassWorkUser(EditUserViewModel model1)
+        public async Task<IActionResult> ClassWorkUser(int axusubject)
         {
-  
-            return View(model1);
+
+
+
+
+        
+            return View(await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync());
         }
 
 

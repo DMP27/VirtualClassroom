@@ -163,6 +163,9 @@ namespace VirtualClassroom.WEB.Data
 
 
         }
+ 
+
+
         private async Task CheckProfessionAsync()
         {
             if (!_context.Professions.Any())
@@ -382,7 +385,15 @@ namespace VirtualClassroom.WEB.Data
                                                            User = await _context.Users.FindAsync("600") },
 
 
+                    },
+                    Classworks = new List<Classwork>
+                    {
+                        new Classwork
+                        {
+                            Name = "Do 2*2"
+                        }
                     }
+
 
 
 
@@ -396,13 +407,38 @@ namespace VirtualClassroom.WEB.Data
                                                            User = await _context.Users.FindAsync("606") },
 
 
+                    },
+                    Classworks = new List<Classwork>
+                    {
+                        new Classwork
+                        {
+                            Name = "Do the Periodic table"
+                        }
                     }
                 });
                 _context.Subjects.Add(new Subject
                 {
-                    Name = "English"
- 
-                });
+                    Name = "English",
+                    UserSubjects = new List<UserSubject>
+                    {
+                                        new UserSubject {
+                                                           User = await _context.Users.FindAsync("612") },
+
+
+                    },
+                    Classworks = new List<Classwork>
+                    {
+                        new Classwork
+                        {
+                            Name = "Do 10 sentences in past tense"
+                        }
+                    }
+
+                }
+                
+                
+                
+                );
                 await _context.SaveChangesAsync();
             }
 
