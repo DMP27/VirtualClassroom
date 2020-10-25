@@ -649,7 +649,8 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-        
+            //IEnumerable<Classwork> classwork = await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync();
+            
             return View(await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync());
         }
 

@@ -392,7 +392,9 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
-                            Name = "Do 2*2"
+                            Name = "Do 2*2",
+                            //FileId = new Guid("Math%20add.pdf")
+                            FileId = "Math%20add.pdf"
                         }
                     }
 
@@ -414,7 +416,9 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
-                            Name = "Do the Periodic table"
+                            Name = "Do the Periodic table",
+                            //FileId = new Guid("Metals_Worksheet.pdf")
+                            FileId = "Metals_Worksheet.pdf"
                         }
                     }
                 });
@@ -432,7 +436,9 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
-                            Name = "Do 10 sentences in past tense"
+                            Name = "Do 10 sentences in past tense",
+                            //FileId = new Guid("EC_grammar-noun-adjective-PI_with-KEY.pdf")
+                            FileId = "EC_grammar-noun-adjective-PI_with-KEY.pdf"
                         }
                     }
 
