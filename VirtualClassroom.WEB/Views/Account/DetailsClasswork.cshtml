@@ -128,9 +128,11 @@
 
                                         </td>
                                         <td>
-                                            <a asp-action="EditDistrict" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
-                                            <a asp-action="DetailsDistrict" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
-                                            <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                            @*<a asp-action="EditDistrict" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                                            <a asp-action="DetailsDistrict" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>*@
+                                            <a asp-action="EditUserClasswork" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                                            <a asp-action="DeleteUserClasswork" asp-route-id="@item.Id" class="btn btn-danger deleteItem"><i class="glyphicon glyphicon-trash"></i></a>
+                                            @*<button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>*@
                                         </td>
                                     </tr>
                                 }

@@ -1027,9 +1027,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             AddClassWorkViewModel model2 = new AddClassWorkViewModel
             {
-                //Name = "",
-                ////Subject = subject,
-                //FileId = "",
+                
                 Id = (int)id,
                 Name = classwork.Name,
                 FileId = classwork.FileId
@@ -1057,35 +1055,16 @@ namespace VirtualClassroom.WEB.Controllers
             }
 
             int auxxx = _MyGlobalVariable;
-            ////Subject subject = await _context.Subjects
-            ////    .Include(s => s.Classworks)
-            ////    .FirstOrDefaultAsync(f => f.Id == auxxx);
+ 
 
             Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
             classwork.Name = classwork1.Name;
             classwork.FileId = classwork1.Myfile.FileName;
-            ////subject.Classworks.Add(new Classwork
-            ////{
-            ////    Name = model22.Name,
-            ////    FileId = model22.Myfile.FileName
-            ////}
-            ////    );
-
-            //var classwork = await _context.Classworks.FindAsync(model22.Id);
+ 
 
 
             _context.Update(classwork);
             await _context.SaveChangesAsync();
-
-
-
-            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
-
-            //foreach (var item in usersubject)
-            //{
-            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
-            //}
-
 
 
 
@@ -1106,6 +1085,32 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public async Task<IActionResult> DeleteUserClasswork(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var userclasswork = await _context.UserClassWorks.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (userclasswork == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.UserClassWorks.Remove(userclasswork);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = _MyGlobalVariable });
+
+        }
 
 
 
@@ -1114,9 +1119,93 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public static int globalfileuser;
+
+        public async Task<IActionResult> EditUserClasswork(int? id)
+        {
 
 
 
+
+            //int auxxx = _MyGlobalVariable;
+            //Subject subject = await _context.Subjects
+            //    .Include(s => s.Classworks)
+            //    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+            //Classwork classwork = await _context.Classworks.FindAsync(id);
+
+
+            //AddClassWorkViewModel model2 = new AddClassWorkViewModel
+            //{
+
+            //    Id = (int)id,
+            //    Name = classwork.Name,
+            //    FileId = classwork.FileId
+
+
+            //};
+
+            //UserClassWork userclasswork = await _context.UserClassWorks.Include(g => g.FileClassroom).FirstOrDefault(f => f.Id == id);
+            IEnumerable<UserClassWork> userclasswork =  _context.UserClassWorks.Where(f => f.Id == id).Include(k => k.FileClassroom);
+
+            string fileaux = "";
+            foreach (var item in userclasswork)
+            {
+                if(item.FileClassroom.Id != 0)
+                {
+                    globalfileuser = item.FileClassroom.Id;
+                    fileaux = item.FileClassroom.FileId;
+                    break;
+                }
+            }
+
+
+            AddmyfileClassworkViewModel model = new AddmyfileClassworkViewModel
+            {
+                Id = (int)id,
+                FileId = fileaux
+
+            };
+
+
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserClasswork(AddmyfileClassworkViewModel model1)
+        {
+
+
+            string filedId = "";
+            if (model1.Myfile != null)
+            {
+                filedId = await _blobHelper.UploadBlob2Async(model1.Myfile, "files");
+            }
+
+            int auxxx = _MyGlobalVariable;
+
+
+            //Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
+            //classwork.Name = classwork1.Name;
+            //classwork.FileId = classwork1.Myfile.FileName;
+            FileClassroom fileClassroom = await _context.FileClassrooms.FindAsync(globalfileuser);
+
+            fileClassroom.FileId = model1.Myfile.FileName;
+            fileClassroom.Name = model1.Name;
+            _context.Update(fileClassroom);
+            await _context.SaveChangesAsync();
+
+            //UserClassWork userClassWork = await _context.UserClassWorks.FindAsync(model1.Id);
+            //userClassWork.
+
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
+        }
 
 
 
