@@ -961,7 +961,38 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public async Task<IActionResult> DeleteClasswork(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var classwork = await _context.Classworks
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (classwork == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Classworks.Remove(classwork);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+
+
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = _MyGlobalVariable });
+
+            //return View(Field);
+        }
 
 
 

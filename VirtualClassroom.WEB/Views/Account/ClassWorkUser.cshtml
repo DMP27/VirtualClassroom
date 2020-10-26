@@ -71,7 +71,8 @@
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
                                     {
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <a asp-action="DeleteClasswork" asp-route-id="@item.Id" class="btn btn-danger deleteItem"><i class="glyphicon glyphicon-trash"></i></a>
+                                       // <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
 
                                     }
 
@@ -98,7 +99,7 @@
             $('#MyTable').DataTable();
 
             // Delete item
-            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Professions/Delete/', false);
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Account/DeleteClasswork/', false);
         });
     </script>
 }
