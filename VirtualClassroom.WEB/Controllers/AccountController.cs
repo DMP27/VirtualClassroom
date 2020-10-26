@@ -16,8 +16,11 @@ using VirtualClassroom.WEB.Data.Entities;
 using VirtualClassroom.WEB.Helpers;
 using VirtualClassroom.WEB.Models;
 
- 
- 
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
+
 namespace VirtualClassroom.WEB.Controllers
 {
     public class AccountController : Controller
@@ -241,10 +244,10 @@ namespace VirtualClassroom.WEB.Controllers
                 System.Diagnostics.Debug.WriteLine("ENTRAAA DONDE NO DEBE------------------------>" + UserType.Teacher.ToString());
                 Guid imageId = Guid.Empty;
 
-                //if (model.ImageFile != null)
-                //{
-                //    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-                //}
+                if (model.ImageFile != null)
+                {
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+                }
 
 
                 User user = await _userHelper.AddUserAsync(model, imageId, UserType.User);
@@ -487,7 +490,10 @@ namespace VirtualClassroom.WEB.Controllers
 
 
         //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Teacher")]
         [Authorize(Roles = "User,Teacher")]
+
         public async Task<IActionResult> UserSubjectList()
         {
             User user = await _userHelper.GetUserAsync(User.Identity.Name);
@@ -576,7 +582,10 @@ namespace VirtualClassroom.WEB.Controllers
 
         public int subjectaux;
         //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Teacher")]
         [Authorize(Roles = "User,Teacher")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserSubjectList(EditUserViewModel model)
@@ -641,18 +650,269 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Teacher")]
+        private static int _MyGlobalVariable;
         [Authorize(Roles = "User,Teacher")]
-  
         public async Task<IActionResult> ClassWorkUser(int axusubject)
         {
 
 
-
+            _MyGlobalVariable = axusubject;
 
             //IEnumerable<Classwork> classwork = await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync();
-            
+
             return View(await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync());
         }
+
+
+
+
+
+
+
+        
+
+        public IActionResult  CreateClasswork()
+        {
+
+
+            //User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            //if (user == null)
+            //{
+            //    return NotFound();
+            //}
+         
+            //Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
+            //if (subject == null)
+            //{
+            //    subject = await _context.Subjects.FirstOrDefaultAsync();
+            //}
+
+
+
+            AddClassWorkViewModel model2 = new AddClassWorkViewModel
+            {
+                //Name = "",
+                ////Subject = subject,
+                //FileId = "",
+                
+            };
+
+
+           
+
+            //return (model2,ayuda);
+
+            return View(model2);
+
+    //        Subject subject1 = await _context.Subjects
+    //.Include(s => s.Classworks)
+    //.FirstOrDefaultAsync(f => f.Id == ayuda);
+
+
+    //        subject1.Classworks.Add(new Classwork
+    //        {
+    //            Name = "prueba"
+    //        }
+    //            );
+    //        _context.Update(subject);
+    //        await _context.SaveChangesAsync();
+
+
+            //return RedirectToAction("CreateClasswork2", new { model2 = model2 , ayuda1 = ayuda});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateClasswork(AddClassWorkViewModel model22)
+        {
+
+            //Guid filesId = Guid.Empty;
+            //if (model22.Myfile != null)
+            //{
+            //    filesId = await _blobHelper.UploadBlobAsync(model22.Myfile, "files");
+            //}
+
+            //int auxxx = _MyGlobalVariable;
+            //Subject subject = await _context.Subjects
+            //    .Include(s => s.Classworks)
+            //    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+            //subject.Classworks.Add(new Classwork
+            //{
+            //    Name = model22.Name,
+            //    FileId = model22.Myfile.FileName
+            //}
+            //    ) ;
+            //_context.Update(subject);
+            //await _context.SaveChangesAsync();
+
+            //Guid filesId = Guid.Empty;
+            string filedId = "";
+            if (model22.Myfile != null)
+            {
+                filedId = await _blobHelper.UploadBlob2Async(model22.Myfile, "files");
+            }
+
+            int auxxx = _MyGlobalVariable;
+            Subject subject = await _context.Subjects
+                .Include(s => s.Classworks)
+                .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+            subject.Classworks.Add(new Classwork
+            {
+                Name = model22.Name,
+                FileId = model22.Myfile.FileName
+            }
+                );
+            _context.Update(subject);
+            await _context.SaveChangesAsync();
+
+
+
+
+
+
+
+
+
+
+
+            //// Retrieve storage account from connection string.
+            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse("StorageKey");
+
+            //// Create the blob client.
+            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            //// Retrieve reference to a previously created container.
+            //CloudBlobContainer container = blobClient.GetContainerReference("mycontainer");
+
+            //// Retrieve reference to a blob named "myblob".
+            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("myblob");
+
+            //// Create or overwrite the "myblob" blob with contents from a local file.
+            //using (var fileStream = System.IO.File.OpenRead(@"path\myfile"))
+            //{
+            //    blockBlob.UploadFromStream(fileStream);
+            //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //subject.UserSubjects.Add(new UserSubject
+            //{
+            //    User = await _context.Users.FindAsync(user.Id)
+            //});
+
+            //_context.Update(subject);
+            //await _context.SaveChangesAsync();
+
+            //_context.
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+            //return View();
+            //if (ModelState.IsValid)
+            //{
+
+            //    try
+            //    {
+            //        _context.Add(classwork);
+            //        await _context.SaveChangesAsync();
+            //        return RedirectToAction(nameof(Index));
+            //    }
+            //    catch (DbUpdateException dbUpdateException)
+            //    {
+
+            //        if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+            //        {
+            //            ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+            //        }
+            //        else
+            //        {
+            //            ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+            //        }
+            //    }
+            //    catch (Exception exception)
+            //    {
+            //        ModelState.AddModelError(string.Empty, exception.Message);
+            //    }
+
+            //}
+            //return View(classwork);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
