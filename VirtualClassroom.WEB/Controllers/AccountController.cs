@@ -492,6 +492,7 @@ namespace VirtualClassroom.WEB.Controllers
         //[Authorize(Roles = "User")]
         //[Authorize(Roles = "User")]
         //[Authorize(Roles = "Teacher")]
+        private static string _MyGlobalVariableuser3;
         [Authorize(Roles = "User,Teacher")]
 
         public async Task<IActionResult> UserSubjectList()
@@ -502,7 +503,7 @@ namespace VirtualClassroom.WEB.Controllers
                 return NotFound();
             }
 
-
+            _MyGlobalVariableuser3 = user.Id;
 
 
             Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
@@ -595,6 +596,7 @@ namespace VirtualClassroom.WEB.Controllers
             //int[] model2 = model.SubjectId;
 
             subjectaux = model.SubjectId[0];
+            _MyGlobalVariable = model.SubjectId[0];
             return  RedirectToAction("ClassWorkUser", new { axusubject = subjectaux });
 
             //if (ModelState.IsValid)
@@ -653,16 +655,21 @@ namespace VirtualClassroom.WEB.Controllers
         //[Authorize(Roles = "User")]
         //[Authorize(Roles = "Teacher")]
         private static int _MyGlobalVariable;
+        private static int _MyGlobalVariable2;
+        
+
         [Authorize(Roles = "User,Teacher")]
         public async Task<IActionResult> ClassWorkUser(int axusubject)
         {
 
 
-            _MyGlobalVariable = axusubject;
+            //_MyGlobalVariable = axusubject;
 
             //IEnumerable<Classwork> classwork = await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync();
 
-            return View(await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync());
+            //return View(await _context.Classworks.Where(c => c.Subject.Id == axusubject).Include(s => s.Subject).ToListAsync());
+            return View(await _context.Classworks.Where(c => c.Subject.Id == _MyGlobalVariable).Include(s => s.Subject).ToListAsync());
+
         }
 
 
@@ -671,7 +678,7 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-        
+
 
         public IActionResult  CreateClasswork()
         {
@@ -771,100 +778,56 @@ namespace VirtualClassroom.WEB.Controllers
             _context.Update(subject);
             await _context.SaveChangesAsync();
 
-
-
-
-
-
-
-
-
-
-
-            //// Retrieve storage account from connection string.
-            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse("StorageKey");
-
-            //// Create the blob client.
-            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-            //// Retrieve reference to a previously created container.
-            //CloudBlobContainer container = blobClient.GetContainerReference("mycontainer");
-
-            //// Retrieve reference to a blob named "myblob".
-            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("myblob");
-
-            //// Create or overwrite the "myblob" blob with contents from a local file.
-            //using (var fileStream = System.IO.File.OpenRead(@"path\myfile"))
+            //User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            //if (user == null)
             //{
-            //    blockBlob.UploadFromStream(fileStream);
+            //    return NotFound();
             //}
+            //user = await _context.Users.Include(k => k.UserSubjects).Where(a => a.i)    Where(u => u.s)
+
+            IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            foreach (var item in usersubject)
+            {
+                Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" +  item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
+            }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //subject.UserSubjects.Add(new UserSubject
-            //{
-            //    User = await _context.Users.FindAsync(user.Id)
-            //});
-
-            //_context.Update(subject);
-            //await _context.SaveChangesAsync();
-
-            //_context.
 
             return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
-            //return View();
-            //if (ModelState.IsValid)
-            //{
+            
+        }
 
-            //    try
-            //    {
-            //        _context.Add(classwork);
-            //        await _context.SaveChangesAsync();
-            //        return RedirectToAction(nameof(Index));
-            //    }
-            //    catch (DbUpdateException dbUpdateException)
-            //    {
 
-            //        if (dbUpdateException.InnerException.Message.Contains("duplicate"))
-            //        {
-            //            ModelState.AddModelError(string.Empty, "There are a record with the same name.");
-            //        }
-            //        else
-            //        {
-            //            ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
-            //        }
-            //    }
-            //    catch (Exception exception)
-            //    {
-            //        ModelState.AddModelError(string.Empty, exception.Message);
-            //    }
 
-            //}
-            //return View(classwork);
+
+
+
+
+
+
+        public async Task<IActionResult> DetailsClasswork(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Subject subject = await _context.Subjects.Include(s => s.Classworks).FirstOrDefaultAsync(a => a.Id == id);
+            Classwork classwork = await _context.Classworks.Include(c => c.Subject).Include(f => f.UserClassWorks).ThenInclude(g => g.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
+            _MyGlobalVariable2 = classwork.Id;
+            //Classwork classwork = await _context.Classworks.Include(c => c.Subject).FirstOrDefaultAsync(a => a.Id == id);
+            //var Field = await _context.Fields
+            //     .Include(f => f.Districts)
+            //     .ThenInclude(d => d.Churches)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            if (classwork == null)
+            {
+                return NotFound();
+            }
+
+            return View(classwork);
         }
 
 
@@ -886,13 +849,105 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public IActionResult AddmyfileClasswork()
+        {
 
 
 
 
 
+            AddmyfileClassworkViewModel model = new AddmyfileClassworkViewModel
+            {
+               
+
+            };
 
 
+
+
+           
+
+            return View(model);
+
+  
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddmyfileClasswork(AddmyfileClassworkViewModel model22)
+        {
+
+            string filedId = "";
+            if (model22.Myfile != null)
+            {
+                filedId = await _blobHelper.UploadBlob2Async(model22.Myfile, "files");
+            }
+
+            int auxxx = _MyGlobalVariable;
+            //Subject subject = await _context.Subjects
+            //    .Include(s => s.Classworks)
+            //    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+
+            Classwork classwork = await _context.Classworks
+                .Include(s => s.UserClassWorks)
+                .FirstOrDefaultAsync(f => f.Id == _MyGlobalVariable2);
+
+
+
+            FileClassroom fileClassroom = new FileClassroom
+            {
+                FileId = model22.Myfile.FileName,
+                Name = model22.Name
+            };
+
+              _context.FileClassrooms.Add(fileClassroom);
+            await _context.SaveChangesAsync();
+            //FileClassroom fileClassroom= await _context.FileClassrooms.Add(new FileClassroom
+            //        {
+            //            FileId = model22.Myfile.FileName
+            //         }
+            //    );
+
+
+            classwork.UserClassWorks.Add(new UserClassWork
+            {
+
+                FileClassroom = await _context.FileClassrooms.FindAsync(fileClassroom.Id),
+                User = await _context.Users.FindAsync(_MyGlobalVariableuser3)
+                
+
+            }
+            );
+            _context.Update(classwork);
+            await _context.SaveChangesAsync();
+
+
+            //subject.Classworks.Add(new Classwork
+            //{
+            //    Name = model22.Name,
+            //    FileId = model22.Myfile.FileName
+            //}
+            //    );
+            //_context.Update(subject);
+            //await _context.SaveChangesAsync();
+
+
+
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            //foreach (var item in usersubject)
+            //{
+            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
+            //}
+
+
+
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
+        }
 
 
 

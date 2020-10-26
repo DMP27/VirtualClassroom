@@ -1,0 +1,115 @@
+﻿@model VirtualClassroom.WEB.Data.Entities.Classwork
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+<h2>Details</h2>
+
+<div>
+    <h4>Field</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.FileId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FileId)
+        </dd>*@
+        <dt>
+            @*@Html.DisplayNameFor(model => model.FileFullPath)*@
+            <p>File</p>
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.FileFullPath)*@
+            <p><a href="https://webiglesia.blob.core.windows.net/files/@Html.DisplayFor(model => model.FileId)">@Html.DisplayFor(model => model.FileId)</a>.</p>
+        </dd>
+ 
+
+    </dl>
+</div>
+<div>
+    <a asp-action="AddmyfileClasswork" asp-route-id="@Model.Id" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Attatch my file</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>*@
+    <a asp-action="ClassWorkUser"  asp-route-id="@Model.Subject.Id" class="btn btn-success">Back to List</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Districts</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserClassWorks.FirstOrDefault().Id)
+                            </th>
+                            @*<th>
+                                @Html.DisplayNameFor(model => model.UserClassWorks.FirstOrDefault().FileClassroom.FileId)
+                            </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserClassWorks.FirstOrDefault().FileClassroom.FileFullPath)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.UserClassWorks)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            @*<td>
+            @Html.DisplayFor(modelItem => item.FileClassroom.FileId)
+        </td>*@
+                            <td>
+                                <p><a href="https://webiglesia.blob.core.windows.net/files/@Html.DisplayFor(modelItem => item.FileClassroom.FileId)">@Html.DisplayFor(modelItem => item.FileClassroom.FileId)</a>.</p>
+
+
+                            </td>
+                            <td>
+                                <a asp-action="EditDistrict" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                                <a asp-action="DetailsDistrict" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Fields/DeleteDistrict/', false);
+        });
+    </script>
+}

@@ -55,7 +55,7 @@ namespace VirtualClassroom.WEB.Data
                 //F1 D1 I1
                 await CheckUserAsync2("600", "1017", "Manuel", "Pinzon", "teacher1@yopmail.com", "345 457 7845", "Poblado", UserType.Teacher, 1,1);
 
-                //await CheckUserAsync2("601", "1018", "Martha", "Paredes", "martha@yopmail.com", "345 427 7845", "Poblado", UserType.User, 1);
+                await CheckUserAsync2("601", "1018", "Martha", "Paredes", "martha@yopmail.com", "345 427 7845", "Poblado", UserType.User, 1,1);
                 //await CheckUserAsync2("602", "1019", "Juan", "Janico", "juan@yopmail.com", "333 457 7845", "Tumaco", UserType.User, 1);
                 //await CheckUserAsync2("603", "1020", "Carlos", "Lopez", "carlos@yopmail.com", "345 333 7845", "Poblado", UserType.User, 1);
                 //await CheckUserAsync2("604", "1021", "Miguel", "Blanco", "miguel@yopmail.com", "345 422 7845", "Florencia", UserType.User, 1);
@@ -136,7 +136,9 @@ namespace VirtualClassroom.WEB.Data
 
 
                 await CheckProfessionAsync();
+                await CheckFileClassroomAsync();
                 await CheckSubjectsAsync();
+                //await CheckUserClassworksAsync();
                 //await  CheckUserSubjectsAsync();
                 //await CheckMeetingAsync();
             }
@@ -284,90 +286,22 @@ namespace VirtualClassroom.WEB.Data
 
 
 
-        //private async Task CheckMeetingAsync()
-        //{
+    
+    
 
-        //}
-
-
-
-
-
-        //private async Task CheckFieldsAsync()
-        //{
-        //    if (!_context.Fields.Any())
-        //    {
-        //        _context.Fields.Add(new Field
-        //        {
-        //            Name = "Field 1",
-        //            Districts = new List<District>
-        //        {
-        //            new District
-        //            {
-        //                Name = "District 1",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "Cathedral of the holy cross" },
-        //                    new Church { Name = "Holy cross" }
-        //                }
-        //            },
-        //            new District
-        //            {
-        //                Name = "District 2",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "Our lady of good voyage" }
-        //                }
-        //            },
-        //            new District
-        //            {
-        //                Name = "District 3",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "Sacred heart" },
-        //                    new Church { Name = "christ fellowship" }
-        //                }
-        //            }
-        //        }
-        //        });
-        //        _context.Fields.Add(new Field
-        //        {
-        //            Name = "Field 2",
-        //            Districts = new List<District>
-        //        {
-        //            new District
-        //            {
-        //                Name = "District 4",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "Metal church" },
-        //                    new Church { Name = "Sacred reich" }
-        //                }
-        //            },
-        //            new District
-        //            {
-        //                Name = "District 5",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "chtulhu's church" }
-        //                }
-        //            },
-        //            new District
-        //            {
-        //                Name = "District 6",
-        //                Churches = new List<Church>
-        //                {
-        //                    new Church { Name = "Left hand path" },
-        //                    new Church { Name = "Last one on earth" }
-        //                }
-        //            }
-        //        }
-        //        });
-        //        await _context.SaveChangesAsync();
-        //    }
-
-        //}
-
+       private async Task CheckFileClassroomAsync()
+        {
+            if (!_context.FileClassrooms.Any())
+            {
+                _context.FileClassrooms.Add(new FileClassroom
+                {
+                    
+                    Name = "just"
+                });
+                
+                await _context.SaveChangesAsync();
+            }
+        }
 
 
 
@@ -392,9 +326,20 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
+                           
                             Name = "Do 2*2",
                             //FileId = new Guid("Math%20add.pdf")
-                            FileId = "Math%20add.pdf"
+                            FileId = "Math%20add.pdf",
+                            UserClassWorks = new List <UserClassWork>
+                            {
+                                new UserClassWork
+                                {
+                                   User = await _context.Users.FindAsync("601")
+                                   ,
+                                   FileClassroom = await _context.FileClassrooms.FindAsync(1)
+                                }
+                            }
+
                         }
                     }
 
@@ -416,12 +361,22 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
+                            
                             Name = "Do the Periodic table",
                             //FileId = new Guid("Metals_Worksheet.pdf")
-                            FileId = "Metals_Worksheet.pdf"
+                            FileId = "Metals_Worksheet.pdf",
+                            UserClassWorks = new List <UserClassWork>
+                            {
+                                new UserClassWork
+                                {
+                                   User = await _context.Users.FindAsync("601")
+                                   ,
+                                   FileClassroom = await _context.FileClassrooms.FindAsync(1)
+                                }
+                            }
                         }
                     }
-                });
+                }) ;
                 _context.Subjects.Add(new Subject
                 {
                     Name = "English",
@@ -436,9 +391,19 @@ namespace VirtualClassroom.WEB.Data
                     {
                         new Classwork
                         {
+                            
                             Name = "Do 10 sentences in past tense",
                             //FileId = new Guid("EC_grammar-noun-adjective-PI_with-KEY.pdf")
-                            FileId = "EC_grammar-noun-adjective-PI_with-KEY.pdf"
+                            FileId = "EC_grammar-noun-adjective-PI_with-KEY.pdf",
+                            UserClassWorks = new List <UserClassWork>
+                            {
+                                new UserClassWork
+                                {
+                                   User = await _context.Users.FindAsync("601")
+                                   ,
+                                   FileClassroom = await _context.FileClassrooms.FindAsync(1)
+                                }
+                            }
                         }
                     }
 
@@ -452,6 +417,24 @@ namespace VirtualClassroom.WEB.Data
 
         }
 
+
+
+
+        //private async Task CheckUserClassworksAsync()
+        //{
+        //    if (!_context.UserClassWorks.Any())
+        //    {
+        //        _context.UserClassWorks.Add(new UserClassWork
+        //        {
+        //            Id = 1,
+        //            Classwork = await _context.Classworks.FindAsync(20),
+        //            FileClassroom = await _context.FileClassrooms.FindAsync(10),
+        //            User = await _context.Users.FindAsync("601")
+        //        });
+
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
 
         private async Task CheckUserSubjectsAsync()
         {

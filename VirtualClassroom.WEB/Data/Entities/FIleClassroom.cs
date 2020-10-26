@@ -13,13 +13,23 @@ namespace VirtualClassroom.WEB.Data.Entities
 
         public int Id { get; set; }
 
-        [Display(Name = "File")]
-        public Guid FileId { get; set; }
+
+        public string Name { get; set; }
+
+        //[Display(Name = "File")]
+        //public Guid FileId { get; set; }
+
+        //[Display(Name = "File")]
+        //public string FileFullPath => FileId == Guid.Empty
+        //    ? $"https://webiglesia.azurewebsites.net/images/noimage.png"
+        //    : $"https://virtualclassroom1.blob.core.windows.net/subjectfiles/{FileId}";
 
         [Display(Name = "File")]
-        public string FileFullPath => FileId == Guid.Empty
-            ? $"https://webiglesia.azurewebsites.net/images/noimage.png"
-            : $"https://virtualclassroom1.blob.core.windows.net/subjectfiles/{FileId}";
+        public string FileId { get; set; }
+
+
+        [Display(Name = "File full path")]
+        public string FileFullPath = "https://webiglesia.blob.core.windows.net/files/";
 
 
 
