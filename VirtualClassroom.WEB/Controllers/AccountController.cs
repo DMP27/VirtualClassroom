@@ -1010,6 +1010,159 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public async Task<IActionResult> EditClasswork(int? id)
+        {
+
+
+
+
+            int auxxx = _MyGlobalVariable;
+            Subject subject = await _context.Subjects
+                .Include(s => s.Classworks)
+                .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+            Classwork classwork = await _context.Classworks.FindAsync(id);
+
+
+            AddClassWorkViewModel model2 = new AddClassWorkViewModel
+            {
+                //Name = "",
+                ////Subject = subject,
+                //FileId = "",
+                Id = (int)id,
+                Name = classwork.Name,
+                FileId = classwork.FileId
+                
+
+            };
+
+
+            
+
+            return View(model2);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditClasswork(AddClassWorkViewModel classwork1)
+        {
+
+
+            string filedId = "";
+            if (classwork1.Myfile != null)
+            {
+                filedId = await _blobHelper.UploadBlob2Async(classwork1.Myfile, "files");
+            }
+
+            int auxxx = _MyGlobalVariable;
+            ////Subject subject = await _context.Subjects
+            ////    .Include(s => s.Classworks)
+            ////    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+            Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
+            classwork.Name = classwork1.Name;
+            classwork.FileId = classwork1.Myfile.FileName;
+            ////subject.Classworks.Add(new Classwork
+            ////{
+            ////    Name = model22.Name,
+            ////    FileId = model22.Myfile.FileName
+            ////}
+            ////    );
+
+            //var classwork = await _context.Classworks.FindAsync(model22.Id);
+
+
+            _context.Update(classwork);
+            await _context.SaveChangesAsync();
+
+
+
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            //foreach (var item in usersubject)
+            //{
+            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
+            //}
+
+
+
+
+            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx});
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

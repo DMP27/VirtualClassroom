@@ -12,7 +12,8 @@ namespace VirtualClassroom.WEB.Models
 {
     public class AddClassWorkViewModel
     {
-        public string Id { get; set; }
+        //public string Id { get; set; }
+        public int Id { get; set; }
 
         [MaxLength(20)]
         [Required]

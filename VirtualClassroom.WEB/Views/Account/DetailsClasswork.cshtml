@@ -38,9 +38,13 @@
     </dl>
 </div>
 <div>
-    <a asp-action="AddmyfileClasswork" asp-route-id="@Model.Id" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Attatch my file</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+    {
+        <a asp-action="AddmyfileClasswork" asp-route-id="@Model.Id" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Attatch my file</a>
+    }
+
     @*<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>*@
-    <a asp-action="ClassWorkUser"  asp-route-id="@Model.Subject.Id" class="btn btn-success">Back to List</a>
+    <a asp-action="ClassWorkUser" asp-route-id="@Model.Subject.Id" class="btn btn-success">Back to List</a>
 </div>
 
 <hr />
@@ -95,9 +99,9 @@
 
                                     </td>
                                     <td>
-                                        <a asp-action="EditDistrict" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                                        @*<a asp-action="EditDistrict" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>*@
                                         <a asp-action="DetailsDistrict" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                        @*<button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>*@
                                     </td>
                                 </tr>
 
