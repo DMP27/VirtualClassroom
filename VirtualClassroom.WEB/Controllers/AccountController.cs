@@ -494,6 +494,7 @@ namespace VirtualClassroom.WEB.Controllers
         //[Authorize(Roles = "Teacher")]
         private static string _MyGlobalVariableuser3;
         private static string username;
+        private static User userglobal;
         [Authorize(Roles = "User,Teacher")]
 
         public async Task<IActionResult> UserSubjectList()
@@ -506,7 +507,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             _MyGlobalVariableuser3 = user.Id;
             username = user.FullName;
-
+            userglobal = user;
 
             Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
             if (profession == null)
@@ -818,6 +819,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             Subject subject = await _context.Subjects.Include(s => s.Classworks).FirstOrDefaultAsync(a => a.Id == id);
             //Classwork classwork = await _context.Classworks.Include(c => c.Subject).Include(f => f.UserClassWorks).ThenInclude(g => g.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
+
             Classwork classwork = await _context.Classworks.Include(c => c.Subject).Include(f => f.UserClassWorks).ThenInclude(p => p.User).ThenInclude(h => h.UserClassWorks).ThenInclude(g => g.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
             _MyGlobalVariable2 = classwork.Id;
             //Classwork classwork = await _context.Classworks.Include(c => c.Subject).FirstOrDefaultAsync(a => a.Id == id);
