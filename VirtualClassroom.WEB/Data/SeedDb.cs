@@ -35,22 +35,7 @@ namespace VirtualClassroom.WEB.Data
             if (!_context.Users.Any())
             {
                 await CheckUserAsync("1010", "Daniel", "Munoz", "danielmunozparedes@gmail.com", "312 232 1364", "florencia", UserType.Admin, 1);
-                ////field 2
-                //await CheckUserAsync("1011", "Carlos", "Munoz", "cml@yopmail.com", "312 232 1454", "florencia", UserType.Teacher, 6);
-                //await CheckUserAsync("10542", "Cthulhu", "Entity cosmic", "cthulhu@yopmail.com", "311 455 4877", "R'lyeh", UserType.Teacher, 8);
-                //await CheckUserAsync("10666", "Satan", "Beelzebub", "satan@yopmail.com", "666 666 6666", "Hell", UserType.Teacher, 9);
-                //await CheckUserAsync("1997", "Andres", "Castillo", "andres@yopmail.com", "312 564 4545", "Robledo", UserType.Teacher, 10);
 
-                ////field 1
-                //await CheckUserAsync("1045", "Cristian", "Castro", "cristian@gmail.com", "389 875 9678", "Cali", UserType.Teacher, 1);
-                //await CheckUserAsync("2325", "Andrea", "Benitez", "andrea@yopmail.com", "301 101 10001", "Tumaco", UserType.Teacher, 2);
-                //await CheckUserAsync("3030", "Juliana", "Quiroz", "juliana@gmail.com", "311 111 1111", "Bogota", UserType.Teacher, 3);
-                //await CheckUserAsync("7897", "Jesus", "Nazareth", "jesus@yopmail.com", "300 232 1232", "Bethlehem", UserType.Teacher, 5);
-
-                //await CheckUserAsync("1045", "Cristian", "Castro", "cristian@gmail.com", "389 875 9678", "Cali", UserType.Teacher, 1);
-                //await CheckUserAsync("2325", "Andrea", "Benitez", "andrea@yopmail.com", "301 101 10001", "Tumaco", UserType.Teacher, 2);
-                //await CheckUserAsync("3030", "Juliana", "Quiroz", "juliana@gmail.com", "311 111 1111", "Bogota", UserType.Teacher, 3);
-                //await CheckUserAsync("7897", "Jesus", "Nazareth", "jesus@yopmail.com", "300 232 1232", "Bethlehem", UserType.Teacher, 5);
 
                 //F1 D1 I1
                 await CheckUserAsync2("600", "1017", "Manuel", "Pinzon", "teacher1@yopmail.com", "345 457 7845", "Poblado", UserType.Teacher, 1,1);
@@ -72,7 +57,7 @@ namespace VirtualClassroom.WEB.Data
 
 
                 ////F1 D3 I3
-                //await CheckUserAsync2("618", "1997", "Andres", "Castillo", "teacher4@yopmail.com", "312 564 4545", "Robledo", UserType.Teacher, 4);
+                await CheckUserAsync2("618", "1997", "Andres", "Castillo", "teacher4@yopmail.com", "312 564 4545", "Robledo", UserType.Teacher, 4,4);
 
                 //await CheckUserAsync2("619", "1011", "Carlos", "Munoz", "cml@yopmail.com", "312 232 1454", "florencia", UserType.User, 4);
                 //await CheckUserAsync2("620", "10003", "Cristina", "Ampudia", "cristina@yopmail.com", "3333566 1666", "ecuador", UserType.User, 4);
@@ -93,7 +78,7 @@ namespace VirtualClassroom.WEB.Data
 
 
                 ////F2 D4 I5
-                //await CheckUserAsync2("624", "1997", "Camilo", "Castillo", "teacher5@yopmail.com", "312 564 4545", "Calle 43", UserType.Teacher, 6);
+                await CheckUserAsync2("624", "1997", "Camilo", "Castillo", "teacher5@yopmail.com", "312 564 4545", "Calle 43", UserType.Teacher, 6,5);
 
                 //await CheckUserAsync2("625", "1011", "Harold", "Munoz", "harold@yopmail.com", "31254", "calle 45-4", UserType.User, 6);
                 //await CheckUserAsync2("626", "1032003", "Jorge", "Ampudia", "jorge@yopmail.com", "3333566 1666", "ecuador", UserType.User, 6);
@@ -104,7 +89,7 @@ namespace VirtualClassroom.WEB.Data
 
 
                 ////F2 D4 I6
-                //await CheckUserAsync2("630", "123997", "Andaluz", "Beltran", "teacher6@yopmail.com", "312 564 4545", "Cll 34-85", UserType.Teacher, 7);
+                await CheckUserAsync2("630", "123997", "Andaluz", "Beltran", "teacher6@yopmail.com", "312 564 4545", "Cll 34-85", UserType.Teacher, 7,6);
 
                 //await CheckUserAsync2("631", "1011", "Sherlock", "Holmes", "sherlock@yopmail.com", "321454", "florencia", UserType.User, 7);
                 //await CheckUserAsync2("632", "100203", "Nianza", "Ampudia", "nianza@yopmail.com", "326 1666", "ecuador", UserType.User, 7);
@@ -114,7 +99,7 @@ namespace VirtualClassroom.WEB.Data
 
 
                 //F2 D6 I7
-                //await CheckUserAsync2("636", "194497", "Jhin", "Araujo", "teacher7@yopmail.com", "312 564 4545", "Calle 34-8", UserType.Teacher, 9);
+                await CheckUserAsync2("636", "194497", "Jhin", "Araujo", "teacher7@yopmail.com", "312 564 4545", "Calle 34-8", UserType.Teacher, 9,7);
 
                 //await CheckUserAsync2("637", "1011", "Pablo", "casas", "pablo@yopmail.com", "310", "florencia 45-5", UserType.User, 9);
                 //await CheckUserAsync2("638", "1002303", "Gina", "quiñones", "gina@yopmail.com", "30", "Tumaco", UserType.User, 9);
@@ -331,7 +316,7 @@ namespace VirtualClassroom.WEB.Data
                             //FileId = new Guid("Math%20add.pdf")
                             FileId = "Math%20add.pdf",
                             Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
-                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
+                            LimitDate = Convert.ToDateTime("1/10/2020 12:00:00 AM") ,
                             UserClassWorks = new List <UserClassWork>
                             {
                                 new UserClassWork
@@ -367,7 +352,7 @@ namespace VirtualClassroom.WEB.Data
                             Name = "Do the Periodic table",
                             //FileId = new Guid("Metals_Worksheet.pdf")
                             Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
-                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
+                            LimitDate = Convert.ToDateTime("1/10/2020 12:00:00 AM") ,
 
                             FileId = "Metals_Worksheet.pdf",
                             UserClassWorks = new List <UserClassWork>
@@ -399,7 +384,7 @@ namespace VirtualClassroom.WEB.Data
                             
                             Name = "Do 10 sentences in past tense",
                             //FileId = new Guid("EC_grammar-noun-adjective-PI_with-KEY.pdf")
-                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
+                            LimitDate = Convert.ToDateTime("1/10/2020 12:00:00 AM") ,
 
                             Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
                             FileId = "EC_grammar-noun-adjective-PI_with-KEY.pdf",
@@ -420,6 +405,94 @@ namespace VirtualClassroom.WEB.Data
                 
                 
                 );
+
+
+
+
+                //_context.Subjects.Add(new Subject
+                //{
+
+                //    Name = "Language Arts",
+
+                //    UserSubjects = new List<UserSubject>
+                //    {
+                //                        new UserSubject {
+                //                                           User = await _context.Users.FindAsync("618") }
+
+                //    }
+
+                //});
+                //_context.Subjects.Add(new Subject
+                //{
+
+                //    Name = "Science",
+
+                //    UserSubjects = new List<UserSubject>
+                //    {
+                //                        new UserSubject {
+                //                                           User = await _context.Users.FindAsync("624") }
+
+                //    }
+
+                //});
+                //_context.Subjects.Add(new Subject
+                //{
+
+                //    Name = "Geography",
+
+                //    UserSubjects = new List<UserSubject>
+                //    {
+                //                        new UserSubject {
+                //                                           User = await _context.Users.FindAsync("630") }
+
+                //    }
+
+                //});
+                //_context.Subjects.Add(new Subject
+                //{
+
+                //    Name = "Computer Science",
+
+                //    UserSubjects = new List<UserSubject>
+                //    {
+                //                        new UserSubject {
+                //                                           User = await _context.Users.FindAsync("636") }
+
+                //    }
+
+                //});
+
+                //_context.Subjects.Add(new Subject
+                //{
+
+                //    Name = "History" 
+
+                //});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 await _context.SaveChangesAsync();
             }
 
