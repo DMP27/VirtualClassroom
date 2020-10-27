@@ -36,5 +36,13 @@ namespace VirtualClassroom.WEB.Models
 
         [Display(Name = "FILE")]
         public IFormFile Myfile { get; set; }
+
+
+        //[Display(Name = "FILE")]
+        //public DateTime Date { get; set; }
+
+
+        [Display(Name = "Limit Date")]
+        public DateTime LimitDate { get; set; }
     }
 }

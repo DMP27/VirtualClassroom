@@ -13,6 +13,8 @@ namespace VirtualClassroom.WEB.Data.Entities
 
         public int grade { get; set; }
 
+        public DateTime Date { get; set; }
+
         [Required]
         [Display(Name = "User")]
         [JsonIgnore]

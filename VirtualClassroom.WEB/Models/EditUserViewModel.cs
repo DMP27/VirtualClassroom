@@ -81,6 +81,7 @@ namespace VirtualClassroom.WEB.Models
 
  
         //[Required]
+
         [Display(Name = "Subject")]
         //[Range(1, 3, ErrorMessage = "You must select a Subject.")]
         //public int SubjectId { get; set; }

@@ -775,7 +775,9 @@ namespace VirtualClassroom.WEB.Controllers
             subject.Classworks.Add(new Classwork
             {
                 Name = model22.Name,
-                FileId = model22.Myfile.FileName
+                FileId = model22.Myfile.FileName,
+                Date = DateTime.Now,
+                LimitDate = model22.LimitDate
             }
                 );
             _context.Update(subject);
@@ -920,8 +922,9 @@ namespace VirtualClassroom.WEB.Controllers
             {
 
                 FileClassroom = await _context.FileClassrooms.FindAsync(fileClassroom.Id),
-                User = await _context.Users.FindAsync(_MyGlobalVariableuser3)
-                
+                User = await _context.Users.FindAsync(_MyGlobalVariableuser3),
+                Date = DateTime.Now
+
 
             }
             );
@@ -1042,8 +1045,9 @@ namespace VirtualClassroom.WEB.Controllers
                 
                 Id = (int)id,
                 Name = classwork.Name,
-                FileId = classwork.FileId
-                
+                FileId = classwork.FileId,
+                LimitDate = classwork.LimitDate
+
 
             };
 
@@ -1072,7 +1076,9 @@ namespace VirtualClassroom.WEB.Controllers
             Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
             classwork.Name = classwork1.Name;
             classwork.FileId = classwork1.Myfile.FileName;
- 
+            classwork.LimitDate = classwork1.LimitDate;
+
+
 
 
             _context.Update(classwork);

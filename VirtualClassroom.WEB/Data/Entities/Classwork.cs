@@ -23,6 +23,10 @@ namespace VirtualClassroom.WEB.Data.Entities
 
 
 
+        public DateTime Date { get; set; }
+
+        public DateTime LimitDate { get; set; }
+
         //[Display(Name = "File")]
         //public Guid FileId { get; set; }
 
