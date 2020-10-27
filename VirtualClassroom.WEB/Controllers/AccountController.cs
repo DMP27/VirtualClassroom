@@ -1079,6 +1079,12 @@ namespace VirtualClassroom.WEB.Controllers
             await _context.SaveChangesAsync();
 
 
+            IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            foreach (var item in usersubject)
+            {
+                Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been updated for the subject:" + item.Subject.Name);
+            }
 
             return RedirectToAction("ClassWorkUser", new { axusubject = auxxx});
 
@@ -1259,13 +1265,16 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
-
+        public static string useridglobal = "";
+        public static string userclassglobal = "";
 
         public async Task<IActionResult> AddGradeUserClasswork( )
         {
 
-            UserClassWork userClassWork = await _context.UserClassWorks.Include(c => c.FileClassroom).FirstOrDefaultAsync(a => a.Id == userclassworkglobal);
-
+            //UserClassWork userClassWork = await _context.UserClassWorks.Include(c => c.FileClassroom).FirstOrDefaultAsync(a => a.Id == userclassworkglobal);
+            UserClassWork userClassWork = await _context.UserClassWorks.Include(c => c.FileClassroom).Include(q => q.User).FirstOrDefaultAsync(a => a.Id == userclassworkglobal);
+            useridglobal = userClassWork.User.Id;
+            userclassglobal = userClassWork.FileClassroom.Name;
             AddmyfileClassworkViewModel model = new AddmyfileClassworkViewModel
             {
 
@@ -1298,7 +1307,19 @@ namespace VirtualClassroom.WEB.Controllers
             _context.Update(userClassWork);
             await _context.SaveChangesAsync();
 
- 
+
+
+
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            IEnumerable<User> user = await _context.Users.Where(u => u.Id == useridglobal).Include(r => r.UserClassWorks).ThenInclude(p => p.FileClassroom).ToListAsync();
+
+
+            foreach (var item in user)
+            {
+                Response response = _mailHelper.SendMail(item.UserName, "INBOX CLASSWORK Uptaded Grades", "Hi! " + item.FirstName + " Your teacher has rated your classwork: " + userclassglobal + " with : " + userClassWork.grade);
+            }
+
             return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
 
         }
