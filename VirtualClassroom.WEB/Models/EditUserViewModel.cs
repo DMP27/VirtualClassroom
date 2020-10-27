@@ -72,16 +72,16 @@ namespace VirtualClassroom.WEB.Models
 
 
 
-        [Required]
+        //[Required]
         [Display(Name = "Profession")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select a Profession.")]
         public int ProfessionId { get; set; }
 
         public IEnumerable<SelectListItem> Professions { get; set; }
 
- 
-        //[Required]
 
+        //[Required]
+        //[Required]
         [Display(Name = "Subject")]
         //[Range(1, 3, ErrorMessage = "You must select a Subject.")]
         //public int SubjectId { get; set; }
@@ -91,9 +91,10 @@ namespace VirtualClassroom.WEB.Models
         //public string[] SubjectId { get; set; }
         public int[] SubjectId { get; set; }
 
-
+        //[Required]
         public int IdSubject { get; set; }
 
+        //[Required]
         public string IdSubjectname { get; set; }
         //public IEnumerable<SelectListItem> SubjectId { get; set; }
         // public IEnumerable<SelectListItem> SubjectId { get; set; }

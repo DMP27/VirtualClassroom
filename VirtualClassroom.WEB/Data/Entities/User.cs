@@ -102,7 +102,7 @@ namespace VirtualClassroom.WEB.Data.Entities
 
         [Display(Name = "Image")]
         public string ImageFullPath => ImageId == Guid.Empty
-            ? $"https://webiglesia.azurewebsites.net/images/noimage.png"
+            ? $"https://virtualweb.azurewebsites.net/images/noimage.png"
             : $"https://virtualclassroom1.blob.core.windows.net/users/{ImageId}";
 
         [Display(Name = "User Type")]

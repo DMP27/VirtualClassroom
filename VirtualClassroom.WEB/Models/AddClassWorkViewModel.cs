@@ -15,8 +15,9 @@ namespace VirtualClassroom.WEB.Models
         //public string Id { get; set; }
         public int Id { get; set; }
 
+
         [MaxLength(20)]
-        [Required]
+        //[Required]
         public string Name { get; set; }
 
         
@@ -33,7 +34,7 @@ namespace VirtualClassroom.WEB.Models
         [Display(Name = "File full path")]
         public string FileFullPath = "https://webiglesia.blob.core.windows.net/files/";
 
-
+        //[Required]
         [Display(Name = "FILE")]
         public IFormFile Myfile { get; set; }
 
@@ -41,7 +42,7 @@ namespace VirtualClassroom.WEB.Models
         //[Display(Name = "FILE")]
         //public DateTime Date { get; set; }
 
-
+        //[Required]
         [Display(Name = "Limit Date")]
         public DateTime LimitDate { get; set; }
     }

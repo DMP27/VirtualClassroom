@@ -106,7 +106,8 @@ namespace VirtualClassroom.WEB
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            //app.UseDeveloperExceptionPage();
+            //app.UseDatabaseErrorPage();
 
 
             app.UseStatusCodePagesWithReExecute("/error/{0}");

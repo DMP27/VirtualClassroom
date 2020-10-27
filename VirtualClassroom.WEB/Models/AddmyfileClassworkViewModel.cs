@@ -13,7 +13,10 @@ namespace VirtualClassroom.WEB.Models
     {
         //public string Id { get; set; }
         public int Id { get; set; }
-        public int grade { get; set; }
+     
+
+        //[Required]
+        public double grade { get; set; }
 
         [MaxLength(20)]
         [Required]
@@ -25,7 +28,7 @@ namespace VirtualClassroom.WEB.Models
         [JsonIgnore]
         public Subject Subject { get; set; }
 
-
+         
         [Display(Name = "File")]
         public string FileId { get; set; }
 
@@ -33,7 +36,7 @@ namespace VirtualClassroom.WEB.Models
         [Display(Name = "File full path")]
         public string FileFullPath = "https://webiglesia.blob.core.windows.net/files/";
 
-
+       // [Required]
         [Display(Name = "FILE")]
         public IFormFile Myfile { get; set; }
     }

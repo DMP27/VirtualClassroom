@@ -11,7 +11,7 @@ namespace VirtualClassroom.WEB.Data.Entities
     {
         public int Id { get; set; }
 
-        public int grade { get; set; }
+        public double grade { get; set; }
 
         public DateTime Date { get; set; }
 
