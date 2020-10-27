@@ -1,0 +1,68 @@
+﻿@model VirtualClassroom.WEB.Data.Entities.UserClassWork
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+<h2>Details</h2>
+
+<div>
+    <h4>Field</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FileClassroom.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FileClassroom.Name)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.FileId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FileId)
+            </dd>*@
+        <dt>
+            @*@Html.DisplayNameFor(model => model.FileFullPath)*@
+            <p>File</p>
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.FileFullPath)*@
+            <p><a href="https://webiglesia.blob.core.windows.net/files/@Html.DisplayFor(model => model.FileClassroom.FileId)">@Html.DisplayFor(model => model.FileClassroom.FileId)</a>.</p>
+        </dd>
+
+
+    </dl>
+</div>
+<div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
+    {
+        <a asp-action="AddGradeUserClasswork" asp-route-id="@Model.Id" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Add Grade</a>
+    }
+
+    @*<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>*@
+    <a asp-action="ClassWorkUser"  class="btn btn-success">Back to List</a>
+</div>
+
+<hr />
+
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Fields/DeleteDistrict/', false);
+        });
+    </script>
+}

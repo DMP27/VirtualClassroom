@@ -1,0 +1,29 @@
+﻿@model VirtualClassroom.WEB.Models.AddmyfileClassworkViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>add grade</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddGradeUserClasswork" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="grade" class="control-label"></label>
+                <input asp-for="grade" class="form-control" />
+                <span asp-validation-for="grade" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Add Grade" class="btn btn-primary" />
+
+            </div>
+        </form>
+    </div>
+</div>

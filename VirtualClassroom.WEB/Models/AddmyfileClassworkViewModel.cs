@@ -13,6 +13,7 @@ namespace VirtualClassroom.WEB.Models
     {
         //public string Id { get; set; }
         public int Id { get; set; }
+        public int grade { get; set; }
 
         [MaxLength(20)]
         [Required]

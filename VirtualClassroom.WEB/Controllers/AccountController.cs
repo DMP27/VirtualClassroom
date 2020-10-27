@@ -1214,6 +1214,116 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        public static int userclassworkglobal;
+        public async Task<IActionResult> DetailsUserClasswork(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Subject subject = await _context.Subjects.Include(s => s.Classworks).FirstOrDefaultAsync(a => a.Id == id);
+            //Classwork classwork = await _context.Classworks.Include(c => c.Subject).Include(f => f.UserClassWorks).ThenInclude(g => g.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
+
+            //Classwork classwork = await _context.Classworks.Include(c => c.Subject).Include(f => f.UserClassWorks).ThenInclude(p => p.User).ThenInclude(h => h.UserClassWorks).ThenInclude(g => g.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
+            UserClassWork userClassWork = await _context.UserClassWorks.Include(c => c.FileClassroom).FirstOrDefaultAsync(a => a.Id == id);
+            userclassworkglobal = userClassWork.Id;
+           // _MyGlobalVariable2 = classwork.Id;
+            //Classwork classwork = await _context.Classworks.Include(c => c.Subject).FirstOrDefaultAsync(a => a.Id == id);
+            //var Field = await _context.Fields
+            //     .Include(f => f.Districts)
+            //     .ThenInclude(d => d.Churches)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            if (userClassWork == null)
+            {
+                return NotFound();
+            }
+
+            return View(userClassWork);
+        }
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> AddGradeUserClasswork( )
+        {
+
+            UserClassWork userClassWork = await _context.UserClassWorks.Include(c => c.FileClassroom).FirstOrDefaultAsync(a => a.Id == userclassworkglobal);
+
+            AddmyfileClassworkViewModel model = new AddmyfileClassworkViewModel
+            {
+
+                Id = userclassworkglobal
+            };
+
+            return View(model);
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddGradeUserClasswork(AddmyfileClassworkViewModel model22)
+        {
+
+
+
+            int auxxx = _MyGlobalVariable;
+
+
+            Classwork classwork = await _context.Classworks
+                .Include(s => s.UserClassWorks)
+                .FirstOrDefaultAsync(f => f.Id == _MyGlobalVariable2);
+
+ 
+            UserClassWork userClassWork = await _context.UserClassWorks.FindAsync(userclassworkglobal);
+            userClassWork.grade = model22.grade;
+ 
+            _context.Update(userClassWork);
+            await _context.SaveChangesAsync();
+
+ 
+            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

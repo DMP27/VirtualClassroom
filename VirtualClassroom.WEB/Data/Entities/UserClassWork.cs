@@ -11,6 +11,8 @@ namespace VirtualClassroom.WEB.Data.Entities
     {
         public int Id { get; set; }
 
+        public int grade { get; set; }
+
         [Required]
         [Display(Name = "User")]
         [JsonIgnore]
