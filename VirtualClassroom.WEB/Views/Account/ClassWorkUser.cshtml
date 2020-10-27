@@ -47,6 +47,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.LimitDate)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserClassWorksNumber)
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -75,6 +78,9 @@
                                     </td>
                                      <td>
                                         @Html.DisplayFor(modelItem => item.LimitDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserClassWorksNumber)
                                     </td>
                                      <td>
                                          @if ( DateTime.Now.Date <= item.LimitDate)

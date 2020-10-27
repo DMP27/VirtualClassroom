@@ -3,12 +3,12 @@
 
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "My subjects";
 }
 
-<h2>Edit</h2>
+<h2>My Subjects</h2>
 
-<h4>User</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-6">
@@ -29,10 +29,22 @@
 
             @*//@Model.SubjectId*@
 
-            <div class="form-group">
+             @*@if (@Model.SubjectId  != null)
+             {
+                  <div class="form-group">
                 <input type="submit" value="Go to ClassWork" class="btn btn-primary" />
-            </div>
+                </div>
+             }
+            @if (Model.Subjects. == null)
+             {
+                  <div class="form-group">
+                <input type="submit" value="Go to ClassWork" class="btn btn-primary" disabled/>
+                </div>
+             }*@
 
+                              <div class="form-group">
+                <input type="submit" value="Go to ClassWork" class="btn btn-primary"  />
+                </div>
 
 
 

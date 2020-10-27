@@ -330,13 +330,15 @@ namespace VirtualClassroom.WEB.Data
                             Name = "Do 2*2",
                             //FileId = new Guid("Math%20add.pdf")
                             FileId = "Math%20add.pdf",
+                            Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
+                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
                             UserClassWorks = new List <UserClassWork>
                             {
                                 new UserClassWork
                                 {
                                    User = await _context.Users.FindAsync("601")
                                    ,
-                                   FileClassroom = await _context.FileClassrooms.FindAsync(1)
+                                   FileClassroom = await _context.FileClassrooms.FindAsync(1) 
                                 }
                             }
 
@@ -364,6 +366,9 @@ namespace VirtualClassroom.WEB.Data
                             
                             Name = "Do the Periodic table",
                             //FileId = new Guid("Metals_Worksheet.pdf")
+                            Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
+                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
+
                             FileId = "Metals_Worksheet.pdf",
                             UserClassWorks = new List <UserClassWork>
                             {
@@ -371,7 +376,7 @@ namespace VirtualClassroom.WEB.Data
                                 {
                                    User = await _context.Users.FindAsync("601")
                                    ,
-                                   FileClassroom = await _context.FileClassrooms.FindAsync(1)
+                                   FileClassroom = await _context.FileClassrooms.FindAsync(1) 
                                 }
                             }
                         }
@@ -394,6 +399,9 @@ namespace VirtualClassroom.WEB.Data
                             
                             Name = "Do 10 sentences in past tense",
                             //FileId = new Guid("EC_grammar-noun-adjective-PI_with-KEY.pdf")
+                            LimitDate = Convert.ToDateTime("31/10/2020 12:00:00 AM") ,
+
+                            Date = Convert.ToDateTime("2/10/2020 12:00:00 AM"),
                             FileId = "EC_grammar-noun-adjective-PI_with-KEY.pdf",
                             UserClassWorks = new List <UserClassWork>
                             {

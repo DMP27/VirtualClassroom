@@ -132,9 +132,13 @@ namespace VirtualClassroom.WEB.Controllers
             //Subject subject = await _context.Subjects.FirstOrDefaultAsync(p => p.Id == user.IdSubject);
             ////int prueba = user.IdSubjectname;
             //string prueba = subject.Name;
-            return View(await _context.UserSubjects.
-                Where(u => u.Subject.Id == user.IdSubject).
+            //return View(await _context.UserSubjects.
+            //    Where(u => u.Subject.Id == user.IdSubject).
+            //    Include(a => a.Subject).Include(f => f.User).ToListAsync());
+              return View(await _context.UserSubjects.
+                Where(u => u.Subject.Id == user.IdSubject).Where(v => v.User.Id != user.Id).
                 Include(a => a.Subject).Include(f => f.User).ToListAsync());
+
             //return View(await _context.Users.Where(u => u.UserSubjects) UserSubjects.Where(p => p.Subject.Id == 1
             //).ToListAsync()
             //);
@@ -341,6 +345,9 @@ namespace VirtualClassroom.WEB.Controllers
 
         public IEnumerable<SelectListItem> aux { get; set; }
         public IEnumerable<SelectListItem> aux2 { get; set; }
+        public static int idsubjectteacherglobal;
+
+        public static IEnumerable<SelectListItem> aux2global { get; set; }
 
         [Authorize(Roles = "User")]
         public async Task<IActionResult> ChangeUser()
@@ -378,6 +385,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             if (user.UserType.ToString() == "Teacher")
             {
+                idsubjectteacherglobal = user.IdSubject;
                 aux2 = _context.Subjects.Where(s => s.Id == user.IdSubject).Select(t => new SelectListItem
                 {
 
@@ -399,8 +407,10 @@ namespace VirtualClassroom.WEB.Controllers
             else
             {
                 user.IdSubject = 0;
+                idsubjectteacherglobal = user.IdSubject;
                 //subject.Name = "d";
                 aux2 = _combosHelper.GetComboSubjects2(user.Id);
+                aux2global = aux2;
                 aux = _combosHelper.GetComboProfessions2(user);
             }
 
@@ -462,7 +472,7 @@ namespace VirtualClassroom.WEB.Controllers
                 user.ImageId = imageId;
                 //user.Church = await _context.Churches.FindAsync(model.ChurchId);
                 //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
-                user.IdSubject = model.IdSubject;
+                user.IdSubject = idsubjectteacherglobal;
                 user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
                 user.Document = model.Document;
 
@@ -1485,6 +1495,7 @@ namespace VirtualClassroom.WEB.Controllers
 
             if (user.UserType.ToString() == "Teacher")
             {
+                idsubjectteacherglobal = user.IdSubject;
                 aux2 = _context.Subjects.Where(s => s.Id == user.IdSubject).Select(t => new SelectListItem
                 {
 
@@ -1569,7 +1580,8 @@ namespace VirtualClassroom.WEB.Controllers
                 user.ImageId = imageId;
                 //user.Church = await _context.Churches.FindAsync(model.ChurchId);
                 //user.UserSubjects = await _context.Churches.FindAsync(model.ChurchId);
-                user.IdSubject = model.IdSubject;
+                //user.IdSubject = model.IdSubject;
+                user.IdSubject = idsubjectteacherglobal;
                 user.Profession = await _context.Professions.FindAsync(model.ProfessionId);
                 user.Document = model.Document;
 
@@ -1883,13 +1895,72 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        [Authorize(Roles = "User")]
+
+        public async Task<IActionResult> Grades()
+        {
+            //User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            //if (user == null)
+            //{
+            //    return NotFound();
+            //}
+            User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+              
+
+            string qw = user.Id;
+            //IEnumerable<User> user1 = await _context.Users.Where(u => u.Id == user.Id).Include(k => k.UserClassWorks).ThenInclude(f => f.FileClassroom).ThenInclude(j => j.UserClassWorks).ThenInclude(y => y.Classwork).Include(o => o.UserSubjects).ThenInclude(g => g.Subject).ToListAsync(); 
+            //IEnumerable<User> user1 = await _context.Users.Where(u => u.Id == user.Id).Include(k => k.UserClassWorks).ToListAsync();
+            IEnumerable<UserClassWork> userclasswork = await _context.UserClassWorks.Where(u => u.User.Id == user.Id).Include(j => j.FileClassroom).Include(o => o.Classwork).Include(f => f.User).ThenInclude(e => e.UserSubjects).ThenInclude(r => r.Subject).ToListAsync();
+
+            return View(userclasswork);
+        }
 
 
 
 
 
 
- 
+        [Authorize(Roles = "Teacher")]
+
+        public async Task<IActionResult> GradesTeacher()
+        {
+            User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            Profession profession = await _context.Professions.FirstOrDefaultAsync(p => p.Users.FirstOrDefault(u => u.Id == user.Id) != null);
+            if (profession == null)
+            {
+                profession = await _context.Professions.FirstOrDefaultAsync();
+            }
+
+
+            //return View(await _context.UserSubjects.
+            //    Where(u => u.Subject.Id == user.IdSubject).Where(v => v.User.Id != user.Id).
+            //    Include(a => a.Subject).Include(f => f.User).ThenInclude(k => k.UserClassWorks).ThenInclude(t => t.Classwork).ToListAsync());
+            //IEnumerable<UserClassWork> userclasswork = await _context.UserClassWorks.Include(j => j.FileClassroom).Include(o => o.Classwork).Include(f => f.User).ThenInclude(e => e.UserSubjects).ThenInclude(r => r.Subject).Where(n => n.User.UserSubjects.FirstOrDefault().Subject.Id == user.IdSubject).ToListAsync();
+            IEnumerable<UserClassWork> userclasswork = await _context.UserClassWorks.Where(i => i.Classwork.Subject.Id == user.IdSubject).Include(j => j.FileClassroom).Include(o => o.Classwork).Include(f => f.User).ThenInclude(e => e.UserSubjects).ThenInclude(r => r.Subject).ToListAsync();
+
+            //return View(await _context.Classworks.Where(f => f.Subject.Id == user.IdSubject).Include(t => t.UserClassWorks).ThenInclude(h => h.User).Include(p => p.Subject).ToListAsync());
+            return View(userclasswork);
+
+
+
+        }
+
+
+
+
+
+
+
 
 
 

@@ -89,12 +89,15 @@ namespace VirtualClassroom.WEB.Models
         //[Range(2, int.MaxValue, ErrorMessage = "You must select a Subject.")]
         //public MultiSelectList SubjectId { get; set; }
         //public string[] SubjectId { get; set; }
+
+
+
         public int[] SubjectId { get; set; }
 
         //[Required]
         public int IdSubject { get; set; }
 
-        //[Required]
+        //
         public string IdSubjectname { get; set; }
         //public IEnumerable<SelectListItem> SubjectId { get; set; }
         // public IEnumerable<SelectListItem> SubjectId { get; set; }
@@ -105,6 +108,8 @@ namespace VirtualClassroom.WEB.Models
 
         //public List<SelectListItem> SubjectId { get; set; }
 
+
+  
         public IEnumerable<SelectListItem> Subjects { get; set; }
     }
 
