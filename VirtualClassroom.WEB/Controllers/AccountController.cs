@@ -950,6 +950,18 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            //IEnumerable<User> user = await _context.Users.Where(u => u.IdSubject == auxxx).Include(t => t.UserClassWorks).ThenInclude(k => k.Classwork).ToListAsync();
+            IEnumerable<User> user = await _context.Users.Where(u => u.IdSubject == auxxx).ToListAsync();
+
+
+            foreach (var item in user)
+            {
+                Response response = _mailHelper.SendMail(item.UserName, "Student's classwork uploaded", "Hi! " + item.FullName + " One your students has uploaded one file from your classwork: " + classwork.Name);
+            }
+
+
             return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
 
         }
