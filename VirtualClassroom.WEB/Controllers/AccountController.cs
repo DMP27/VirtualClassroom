@@ -505,10 +505,12 @@ namespace VirtualClassroom.WEB.Controllers
         private static string _MyGlobalVariableuser3;
         private static string username;
         private static User userglobal;
+        public int[] f2;
         [Authorize(Roles = "User,Teacher")]
 
         public async Task<IActionResult> UserSubjectList()
         {
+            
             User user = await _userHelper.GetUserAsync(User.Identity.Name);
             if (user == null)
             {
@@ -578,7 +580,7 @@ namespace VirtualClassroom.WEB.Controllers
                 Subjects = aux2,
                 IdSubjectname = subject.Name,
                 //Subjects = _combosHelper.GetComboSubjects2(user.Id),
-
+                //SubjectId = 2,
                 //Subjects =  _combosHelper.GetComboSubjects(),
                 Professions = aux,
 
@@ -716,6 +718,7 @@ namespace VirtualClassroom.WEB.Controllers
                 //Name = "",
                 ////Subject = subject,
                 //FileId = "",
+                LimitDate = DateTime.Now
                 
             };
 
@@ -770,48 +773,89 @@ namespace VirtualClassroom.WEB.Controllers
             //await _context.SaveChangesAsync();
 
             //Guid filesId = Guid.Empty;
-            string filedId = "";
-            if (model22.Myfile != null)
+
+            if (model22.LimitDate >= DateTime.Now)
             {
-                filedId = await _blobHelper.UploadBlob2Async(model22.Myfile, "files");
+                string filedId = "";
+                if (model22.Myfile != null)
+                {
+                    filedId = await _blobHelper.UploadBlob2Async(model22.Myfile, "files");
+                }
+
+                int auxxx = _MyGlobalVariable;
+                Subject subject = await _context.Subjects
+                    .Include(s => s.Classworks)
+                    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+                subject.Classworks.Add(new Classwork
+                {
+                    Name = model22.Name,
+                    FileId = model22.Myfile.FileName,
+                    Date = DateTime.Now,
+                    LimitDate = model22.LimitDate
+                }
+                    );
+                _context.Update(subject);
+                await _context.SaveChangesAsync();
+
+
+
+                IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+                foreach (var item in usersubject)
+                {
+                    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
+                }
+
+
+
+
+                return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
             }
-
-            int auxxx = _MyGlobalVariable;
-            Subject subject = await _context.Subjects
-                .Include(s => s.Classworks)
-                .FirstOrDefaultAsync(f => f.Id == auxxx);
-
-
-            subject.Classworks.Add(new Classwork
+            else
             {
-                Name = model22.Name,
-                FileId = model22.Myfile.FileName,
-                Date = DateTime.Now,
-                LimitDate = model22.LimitDate
+                return View(model22);
             }
-                );
-            _context.Update(subject);
-            await _context.SaveChangesAsync();
-
-            //User user = await _userHelper.GetUserAsync(User.Identity.Name);
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            //user = await _context.Users.Include(k => k.UserSubjects).Where(a => a.i)    Where(u => u.s)
-
-            IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
-
-            foreach (var item in usersubject)
-            {
-                Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" +  item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
-            }
-
-
-
-
-            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
             
+            //string filedId = "";
+            //if (model22.Myfile != null)
+            //{
+            //    filedId = await _blobHelper.UploadBlob2Async(model22.Myfile, "files");
+            //}
+
+            //int auxxx = _MyGlobalVariable;
+            //Subject subject = await _context.Subjects
+            //    .Include(s => s.Classworks)
+            //    .FirstOrDefaultAsync(f => f.Id == auxxx);
+
+
+            //subject.Classworks.Add(new Classwork
+            //{
+            //    Name = model22.Name,
+            //    FileId = model22.Myfile.FileName,
+            //    Date = DateTime.Now,
+            //    LimitDate = model22.LimitDate
+            //}
+            //    );
+            //_context.Update(subject);
+            //await _context.SaveChangesAsync();
+
+
+
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+            //foreach (var item in usersubject)
+            //{
+            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" +  item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
+            //}
+
+
+
+
+            //return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
         }
 
 

@@ -91,7 +91,7 @@ namespace VirtualClassroom.WEB.Models
         //public string[] SubjectId { get; set; }
 
 
-
+        //[Required]
         public int[] SubjectId { get; set; }
 
         //[Required]
