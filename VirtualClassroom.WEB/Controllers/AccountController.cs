@@ -20,6 +20,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using Vereyon.Web;
 
 namespace VirtualClassroom.WEB.Controllers
 {
@@ -31,14 +32,15 @@ namespace VirtualClassroom.WEB.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly IBlobHelper _blobHelper;
         private readonly IMailHelper _mailHelper;
-
-        public AccountController(DataContext context,IUserHelper userHelper,ICombosHelper combosHelper,IBlobHelper blobHelper, IMailHelper mailHelper)
+        private readonly IFlashMessage _flashMessage;
+        public AccountController(DataContext context,IUserHelper userHelper,ICombosHelper combosHelper,IBlobHelper blobHelper, IMailHelper mailHelper, IFlashMessage flashMessage)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _blobHelper = blobHelper;
             _mailHelper = mailHelper;
+            _flashMessage = flashMessage;
         }
 
 
@@ -1049,10 +1051,12 @@ namespace VirtualClassroom.WEB.Controllers
             {
                 _context.Classworks.Remove(classwork);
                 await _context.SaveChangesAsync();
+                _flashMessage.Confirmation("The category was deleted.");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                //ModelState.AddModelError(string.Empty, ex.Message);
+                _flashMessage.Danger("The category can't be deleted because it has related records.");
             }
 
 
@@ -2004,9 +2008,116 @@ namespace VirtualClassroom.WEB.Controllers
 
 
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SubjectList()
+        {
+
+            return View(await _context.Subjects.ToListAsync());
+        }
 
 
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateSubject()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSubject([Bind("Id,Name")] Subject subject)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    _context.Add(subject);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(SubjectList));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+
+            }
+            return View(subject);
+        }
+
+
+
+
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditSubject(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var subject = await _context.Subjects.FindAsync(id);
+            if (subject == null)
+            {
+                return NotFound();
+            }
+            return View(subject);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSubject(int id, [Bind("Id,Name")] Subject subject)
+        {
+            if (id != subject.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(subject);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+
+                // return RedirectToAction(nameof(Index));
+            }
+            return View(subject);
+        }
 
     }
 }

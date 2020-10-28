@@ -49,6 +49,7 @@
                         <li><a asp-area="" asp-controller="Professions" asp-action="Index">Professions</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="Index">User List</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="RegisterTeacher">Register Teacher</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="SubjectList">Subject List</a></li>
 
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
@@ -58,16 +59,16 @@
                         <li><a asp-area="" asp-controller="Account" asp-action="StudentsList">Students List</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="UserSubjectList"> My subjects</a></li>
                         @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
-                          <li><a asp-area="" asp-controller="Account" asp-action="GradesTeacher">Student's grades</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="GradesTeacher">Student's grades</a></li>
 
-                         
+
 
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                     {
                         <li><a asp-area="" asp-controller="Account" asp-action="UserSubjectList"> My subjects</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="Grades"> My Grades</a></li>
-                        
+
                         @*<li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>*@
                         @*<li><a asp-area="" asp-controller="Meeting" asp-action="Index">Meetings List</a></li>*@
 
