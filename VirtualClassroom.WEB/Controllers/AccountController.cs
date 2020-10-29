@@ -209,15 +209,31 @@ namespace VirtualClassroom.WEB.Controllers
         {
             AddUserViewModel model = new AddUserViewModel
             {
-                
-                
+
+
                 //Districts = _combosHelper.GetComboDistricts(0),
                 //Churches = _combosHelper.GetComboChurches(0),
-                Professions = _combosHelper.GetComboProfessions(),
+                //Professions = _combosHelper.GetComboProfessions()
+                Professions = _context.Professions.Where(p => p.Name == "Student").Select(t => new SelectListItem
+                {
+
+                    Text = t.Name,
+                    Value = $"{t.Id}"
+                }).OrderBy(t => t.Text)
+                .ToList()
+
+
+                ,
                 Subjects = _combosHelper.GetComboSubjects()
+
+
 
             };
 
+ 
+
+
+             
             return View(model);
         }
 
@@ -264,7 +280,15 @@ namespace VirtualClassroom.WEB.Controllers
                     //model.Districts = _combosHelper.GetComboDistricts(model.FieldId);
                     //model.Churches = _combosHelper.GetComboChurches(model.DistrictId);
                     model.Subjects = _combosHelper.GetComboSubjects();
-                    model.Professions = _combosHelper.GetComboProfessions();
+                    //model.Professions = _combosHelper.GetComboProfessions();
+
+                    model.Professions = _context.Professions.Where(p => p.Name == "Student").Select(t => new SelectListItem
+                    {
+
+                        Text = t.Name,
+                        Value = $"{t.Id}"
+                    }).OrderBy(t => t.Text)
+                .ToList();
 
                     return View(model);
                 }
@@ -415,7 +439,7 @@ namespace VirtualClassroom.WEB.Controllers
                 aux2global = aux2;
                 aux = _combosHelper.GetComboProfessions2(user);
             }
-
+            
             EditUserViewModel model = new EditUserViewModel
             {
                
@@ -818,7 +842,7 @@ namespace VirtualClassroom.WEB.Controllers
             }
             else
             {
-                _flashMessage.Danger("Invalid Date.");
+                _flashMessage.Danger("Invalid Date. Make sure the Limit Date is 48 hr ahead of time");
                 return View(model22);
             }
             
@@ -1166,7 +1190,7 @@ namespace VirtualClassroom.WEB.Controllers
             }
             else
             {
-                _flashMessage.Danger("Invalid Date.");
+                _flashMessage.Danger("Invalid Date. Make sure the Limit Date is 48 hr ahead of time");
                 return View(classwork1);
             }
 
