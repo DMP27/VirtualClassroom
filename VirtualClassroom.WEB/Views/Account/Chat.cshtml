@@ -1,0 +1,49 @@
+﻿@model VirtualClassroom.WEB.Data.Entities.UserSubject
+
+<h2>Global Chat</h2>
+
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-2">User</div>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Teacher"))
+        { 
+            <img src="@Model.User.ImageFullPath" style="width:250px;height:250px;border-radius:50%" />
+            <div class="col-4"><input type="text" id="userInput" value="@Model.User.FullName (@Model.User.UserType: @Model.Subject.Name)" disabled /></div>
+        }
+         @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+         {
+             <img src="@Model.User.ImageFullPath" style="width:250px;height:250px;border-radius:50%" />
+             <div class="col-4"><input type="text" id="userInput" value="@Model.User.FullName (Student)" disabled /></div>
+         }
+         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+         {
+             <img src="@Model.User.ImageFullPath" style="width:250px;height:250px;border-radius:50%" />
+             <div class="col-4"><input type="text" id="userInput" value="(Admin)" disabled /></div>
+         }
+    </div>
+    <div class="row">
+        <div class="col-2">Message</div>
+        <div class="col-4"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+

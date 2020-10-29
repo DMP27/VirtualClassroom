@@ -818,6 +818,7 @@ namespace VirtualClassroom.WEB.Controllers
             }
             else
             {
+                _flashMessage.Danger("Invalid Date.");
                 return View(model22);
             }
             
@@ -987,31 +988,6 @@ namespace VirtualClassroom.WEB.Controllers
             _context.Update(classwork);
             await _context.SaveChangesAsync();
 
-
-            //subject.Classworks.Add(new Classwork
-            //{
-            //    Name = model22.Name,
-            //    FileId = model22.Myfile.FileName
-            //}
-            //    );
-            //_context.Update(subject);
-            //await _context.SaveChangesAsync();
-
-
-
-            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
-
-            //foreach (var item in usersubject)
-            //{
-            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been upload for the subject:" + item.Subject.Name);
-            //}
-
-
-
-
-            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
-
-            //IEnumerable<User> user = await _context.Users.Where(u => u.IdSubject == auxxx).Include(t => t.UserClassWorks).ThenInclude(k => k.Classwork).ToListAsync();
             IEnumerable<User> user = await _context.Users.Where(u => u.IdSubject == auxxx).ToListAsync();
 
 
@@ -1122,35 +1098,82 @@ namespace VirtualClassroom.WEB.Controllers
         {
 
 
-            string filedId = "";
-            if (classwork1.Myfile != null)
-            {
-                filedId = await _blobHelper.UploadBlob2Async(classwork1.Myfile, "files");
-            }
+            //string filedId = "";
+            //if (classwork1.Myfile != null)
+            //{
+            //    filedId = await _blobHelper.UploadBlob2Async(classwork1.Myfile, "files");
+            //}
 
-            int auxxx = _MyGlobalVariable;
+            //int auxxx = _MyGlobalVariable;
  
 
-            Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
-            classwork.Name = classwork1.Name;
-            classwork.FileId = classwork1.Myfile.FileName;
-            classwork.LimitDate = classwork1.LimitDate;
+            //Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
+            //classwork.Name = classwork1.Name;
+            //classwork.FileId = classwork1.Myfile.FileName;
+            //classwork.LimitDate = classwork1.LimitDate;
 
 
 
 
-            _context.Update(classwork);
-            await _context.SaveChangesAsync();
+            //_context.Update(classwork);
+            //await _context.SaveChangesAsync();
 
 
-            IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
 
-            foreach (var item in usersubject)
+            //foreach (var item in usersubject)
+            //{
+            //    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been updated for the subject:" + item.Subject.Name);
+            //}
+
+            //return RedirectToAction("ClassWorkUser", new { axusubject = auxxx});
+
+
+
+
+            if (classwork1.LimitDate >= DateTime.Now)
             {
-                Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been updated for the subject:" + item.Subject.Name);
+                string filedId = "";
+                if (classwork1.Myfile != null)
+                {
+                    filedId = await _blobHelper.UploadBlob2Async(classwork1.Myfile, "files");
+                }
+
+                int auxxx = _MyGlobalVariable;
+
+
+                Classwork classwork = await _context.Classworks.FindAsync(classwork1.Id);
+                classwork.Name = classwork1.Name;
+                classwork.FileId = classwork1.Myfile.FileName;
+                classwork.LimitDate = classwork1.LimitDate;
+
+
+
+
+                _context.Update(classwork);
+                await _context.SaveChangesAsync();
+
+
+                IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(u => u.Subject.Id == auxxx).Include(s => s.User).Include(j => j.Subject).ToListAsync();
+
+                foreach (var item in usersubject)
+                {
+                    Response response = _mailHelper.SendMail(item.User.UserName, "INBOX CLASSWORK HAS BEEN UPDATED", "Hi!" + item.User.FirstName + "One new Classwork has been updated for the subject:" + item.Subject.Name);
+                }
+
+                return RedirectToAction("ClassWorkUser", new { axusubject = auxxx });
+
+            }
+            else
+            {
+                _flashMessage.Danger("Invalid Date.");
+                return View(classwork1);
             }
 
-            return RedirectToAction("ClassWorkUser", new { axusubject = auxxx});
+
+
+
+
 
         }
 
@@ -2117,6 +2140,30 @@ namespace VirtualClassroom.WEB.Controllers
                 // return RedirectToAction(nameof(Index));
             }
             return View(subject);
+        }
+
+
+
+
+
+        [Authorize(Roles = "User,Teacher,Admin")]
+        public async Task<IActionResult> Chat()
+
+        {
+            User user = await _userHelper.GetUserAsync(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            //ICollection<UserSubject> UserSubject = (ICollection<UserSubject>)await _context.UserSubjects.FirstOrDefaultAsync(p => p.User.Id == user.Id);
+
+            UserSubject usersubject = await _context.UserSubjects.Include(g => g.Subject).Include(K => K.User).FirstOrDefaultAsync(p => p.User.Id == user.Id);
+
+            //IEnumerable<UserSubject> usersubject = await _context.UserSubjects.Where(p => p.Id == user.UserSubjects).ToListAsync();
+            return View(usersubject);
+
+
         }
 
     }

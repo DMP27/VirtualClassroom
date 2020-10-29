@@ -12,6 +12,7 @@ using Vereyon.Web;
 using VirtualClassroom.WEB.Data;
 using VirtualClassroom.WEB.Data.Entities;
 using VirtualClassroom.WEB.Helpers;
+using VirtualClassroom.WEB.Hubs;
 namespace VirtualClassroom.WEB
 {
     public class Startup
@@ -90,6 +91,7 @@ namespace VirtualClassroom.WEB
             services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
+            services.AddSignalR();
             services.AddFlashMessage();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -123,6 +125,11 @@ namespace VirtualClassroom.WEB
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSignalR(route =>
+            {
+                route.MapHub<ChatHub>("/chathub");
             });
         }
     }

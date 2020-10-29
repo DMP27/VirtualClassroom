@@ -68,7 +68,7 @@
 
             <div class="form-group">
                 <label asp-for="SubjectId" class="control-label"></label>
-                <select asp-for="SubjectId" asp-items="@Model.Subjects" class="form-control"></select>
+                <select asp-for="SubjectId" asp-items="@Model.Subjects" class="form-control" required></select>
                 <span asp-validation-for="SubjectId" class="text-danger"></span>
             </div>
 
@@ -132,7 +132,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
+    @*<script type="text/javascript">
          $(document).ready(function () {
              $("#SubjectId").change(function () {
                 $("#UserSubjectId").empty();
@@ -157,7 +157,7 @@
                     }
                 });
                 return false;
-            })
+            })*@
 
             @*$("#DistrictId").change(function () {
                 $("#ChurchId").empty();
